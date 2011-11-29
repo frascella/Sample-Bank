@@ -50,6 +50,39 @@ if ( ! isset( $content_width ) )
 /** Tell WordPress to run esoft_setup() when the 'after_setup_theme' hook is run. */
 add_action( 'after_setup_theme', 'esoft_setup' );
 
+// Custom Taxonomy Code  
+add_action( 'init', 'build_taxonomies', 0 );
+
+function build_taxonomies() {
+    register_taxonomy( 'main', 'post', array( 'hierarchical' => true, 'label' => 'Main Categories', 'query_var' => true, 'rewrite' => true ) );
+    register_taxonomy( 'properties', 'post', array( 'hierarchical' => true, 'label' => 'Properties', 'query_var' => true, 'rewrite' => true ) );
+}
+// remove unnecessary page/post meta boxes
+function remove_meta_boxes() {
+    // posts
+    remove_meta_box('postcustom','post','normal');
+    remove_meta_box('trackbacksdiv','post','normal');
+    remove_meta_box('commentstatusdiv','post','normal');
+    remove_meta_box('commentsdiv','post','normal');
+    remove_meta_box('categorydiv','post','normal');
+    remove_meta_box('tagsdiv-post_tag','post','normal');
+    remove_meta_box('slugdiv','post','normal');
+    remove_meta_box('authordiv','post','normal');
+    // pages
+    remove_meta_box('postcustom','page','normal');
+    remove_meta_box('commentstatusdiv','page','normal');
+    remove_meta_box('trackbacksdiv','page','normal');
+    remove_meta_box('commentsdiv','page','normal');
+    remove_meta_box('slugdiv','page','normal');
+    remove_meta_box('authordiv','page','normal');
+}
+add_action('admin_init','remove_meta_boxes');
+
+function allow_contributor_uploads() {
+    $contributor = get_role('contributor');
+    $contributor->add_cap('upload_files');
+}
+
 if ( ! function_exists( 'esoft_setup' ) ):
 /**
  * Sets up theme defaults and registers support for various WordPress features.
