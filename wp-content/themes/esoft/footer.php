@@ -46,5 +46,7 @@
 
 	wp_footer();
 ?>
+<script type="text/javascript" src="wp-content/themes/esoft/js/jquery.min.js"></script>
+<script type="text/javascript" src="wp-content/themes/esoft/js/application.js"></script>
 </body>
 </html>

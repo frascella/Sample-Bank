@@ -14,7 +14,6 @@
  * @since Esoft Themes 1.2
  */
 ?>
-
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 
 				<div id="nav-above" class="navigation">
@@ -31,6 +30,11 @@
 
 					<div class="entry-content">
 						<?php the_content(); ?>
+						<?php /*$content = split_content(); 
+							echo '<div id="column1">', array_shift($content), '</div>';
+							echo '<div id="column2">', implode($content), '</div>';
+							*/
+						?>
 						<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'esoft' ), 'after' => '</div>' ) ); ?>
 					</div><!-- .entry-content -->
 

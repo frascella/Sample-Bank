@@ -51,13 +51,16 @@ if ( ! isset( $content_width ) )
 add_action( 'after_setup_theme', 'esoft_setup' );
 
 // Custom Taxonomy Code  
+/*
 add_action( 'init', 'build_taxonomies', 0 );
 
 function build_taxonomies() {
     register_taxonomy( 'main', 'post', array( 'hierarchical' => true, 'label' => 'Main Categories', 'query_var' => true, 'rewrite' => true ) );
     register_taxonomy( 'properties', 'post', array( 'hierarchical' => true, 'label' => 'Properties', 'query_var' => true, 'rewrite' => true ) );
 }
+*/
 // remove unnecessary page/post meta boxes
+/*
 function remove_meta_boxes() {
     // posts
     remove_meta_box('postcustom','post','normal');
@@ -77,7 +80,9 @@ function remove_meta_boxes() {
     remove_meta_box('authordiv','page','normal');
 }
 add_action('admin_init','remove_meta_boxes');
+*/
 
+add_action('admin_init','allow_contributor_uploads');
 function allow_contributor_uploads() {
     $contributor = get_role('contributor');
     $contributor->add_cap('upload_files');
@@ -111,7 +116,7 @@ function esoft_setup() {
 	add_editor_style();
 
 	// Post Format support. You can also use the legacy "gallery" or "asides" (note the plural) categories.
-	add_theme_support( 'post-formats', array( 'aside', 'gallery' ) );
+	add_theme_support( 'post-formats', array( /*'aside',*/ 'gallery' ) );
 
 	// This theme uses post thumbnails
 	add_theme_support( 'post-thumbnails' );

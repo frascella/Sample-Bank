@@ -18,7 +18,6 @@
  * @since Esoft Themes 1.0
  */
 ?>
-
 <?php /* Display navigation to next/previous pages when applicable */ ?>
 <?php if ( $wp_query->max_num_pages > 1 ) : ?>
 	<div id="nav-above" class="navigation">
@@ -59,10 +58,10 @@
 
 	<?php if ( ( function_exists( 'get_post_format' ) && 'gallery' == get_post_format( $post->ID ) ) || in_category( _x( 'gallery', 'gallery category slug', 'esoft' ) ) ) : ?>
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'esoft' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
+			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'esoft' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php //the_title(); ?></a></h2>
 
 			<div class="entry-meta">
-				<?php esoft_posted_on(); ?>
+				<?php //esoft_posted_on(); ?>
 			</div><!-- .entry-meta -->
 
 			<div class="entry-content">
@@ -74,99 +73,30 @@
 					if ( $images ) :
 						$total_images = count( $images );
 						$image = array_shift( $images );
-						$image_img_tag = wp_get_attachment_image( $image->ID, 'thumbnail' );
+						$image_img_tag = wp_get_attachment_image( $image->ID);
+						$image_img_src = wp_get_attachment_image_src($image->ID, 300);
 				?>
-						<div class="gallery-thumb">
+						<!--div class="gallery-thumb">
 							<a class="size-thumbnail" href="<?php the_permalink(); ?>"><?php echo $image_img_tag; ?></a>
-						</div><!-- .gallery-thumb -->
-						<p><em><?php printf( _n( 'This gallery contains <a %1$s>%2$s photo</a>.', 'This gallery contains <a %1$s>%2$s photos</a>.', $total_images, 'esoft' ),
+						</div--><!-- .gallery-thumb -->
+						<div class="boxgrid captionfull">
+							<img src="<?php echo $image_img_src[0]; ?>"/>	
+							<div class="cover boxcaption">
+								<h3>Lorem Ipsum</h3>
+								<p>dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et</p>
+							</div>
+						</div>
+						<!--p><em><?php printf( _n( 'This gallery contains <a %1$s>%2$s photo</a>.', 'This gallery contains <a %1$s>%2$s photos</a>.', $total_images, 'esoft' ),
 								'href="' . get_permalink() . '" title="' . sprintf( esc_attr__( 'Permalink to %s', 'esoft' ), the_title_attribute( 'echo=0' ) ) . '" rel="bookmark"',
 								number_format_i18n( $total_images )
-							); ?></em></p>
+							); ?></em></p-->
 				<?php endif; ?>
 						<?php the_excerpt(); ?>
 <?php endif; ?>
 			</div><!-- .entry-content -->
-
-			<div class="entry-utility">
-			<?php if ( function_exists( 'get_post_format' ) && 'gallery' == get_post_format( $post->ID ) ) : ?>
-				<a href="<?php echo get_post_format_link( 'gallery' ); ?>" title="<?php esc_attr_e( 'View Galleries', 'esoft' ); ?>"><?php _e( 'More Galleries', 'esoft' ); ?></a>
-				<span class="meta-sep">|</span>
-			<?php elseif ( in_category( _x( 'gallery', 'gallery category slug', 'esoft' ) ) ) : ?>
-				<a href="<?php echo get_term_link( _x( 'gallery', 'gallery category slug', 'esoft' ), 'category' ); ?>" title="<?php esc_attr_e( 'View posts in the Gallery category', 'esoft' ); ?>"><?php _e( 'More Galleries', 'esoft' ); ?></a>
-				<span class="meta-sep">|</span>
-			<?php endif; ?>
-				<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'esoft' ), __( '1 Comment', 'esoft' ), __( '% Comments', 'esoft' ) ); ?></span>
-				<?php edit_post_link( __( 'Edit', 'esoft' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?>
-			</div><!-- .entry-utility -->
 		</div><!-- #post-## -->
 
-<?php /* How to display posts of the Aside format. The asides category is the old way. */ ?>
-
-	<?php elseif ( ( function_exists( 'get_post_format' ) && 'aside' == get_post_format( $post->ID ) ) || in_category( _x( 'asides', 'asides category slug', 'esoft' ) )  ) : ?>
-		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
-		<?php if ( is_archive() || is_search() ) : // Display excerpts for archives and search. ?>
-			<div class="entry-summary">
-				<?php the_excerpt(); ?>
-			</div><!-- .entry-summary -->
-		<?php else : ?>
-			<div class="entry-content">
-				<?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'esoft' ) ); ?>
-			</div><!-- .entry-content -->
-		<?php endif; ?>
-
-			<div class="entry-utility">
-				<?php esoft_posted_on(); ?>
-				<span class="meta-sep">|</span>
-				<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'esoft' ), __( '1 Comment', 'esoft' ), __( '% Comments', 'esoft' ) ); ?></span>
-				<?php edit_post_link( __( 'Edit', 'esoft' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?>
-			</div><!-- .entry-utility -->
-		</div><!-- #post-## -->
-
-<?php /* How to display all other posts. */ ?>
-
-	<?php else : ?>
-		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'esoft' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
-
-			<div class="entry-meta">
-				<?php esoft_posted_on(); ?>
-			</div><!-- .entry-meta -->
-
-	<?php if ( is_archive() || is_search() ) : // Only display excerpts for archives and search. ?>
-			<div class="entry-summary">
-				<?php the_excerpt(); ?>
-			</div><!-- .entry-summary -->
-	<?php else : ?>
-			<div class="entry-content">
-				<?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'esoft' ) ); ?>
-				<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'esoft' ), 'after' => '</div>' ) ); ?>
-			</div><!-- .entry-content -->
-	<?php endif; ?>
-
-			<div class="entry-utility">
-				<?php if ( count( get_the_category() ) ) : ?>
-					<span class="cat-links">
-						<?php printf( __( '<span class="%1$s">Posted in</span> %2$s', 'esoft' ), 'entry-utility-prep entry-utility-prep-cat-links', get_the_category_list( ', ' ) ); ?>
-					</span>
-					<span class="meta-sep">|</span>
-				<?php endif; ?>
-				<?php
-					$tags_list = get_the_tag_list( '', ', ' );
-					if ( $tags_list ):
-				?>
-					<span class="tag-links">
-						<?php printf( __( '<span class="%1$s">Tagged</span> %2$s', 'esoft' ), 'entry-utility-prep entry-utility-prep-tag-links', $tags_list ); ?>
-					</span>
-					<span class="meta-sep">|</span>
-				<?php endif; ?>
-				<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'esoft' ), __( '1 Comment', 'esoft' ), __( '% Comments', 'esoft' ) ); ?></span>
-				<?php edit_post_link( __( 'Edit', 'esoft' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?>
-			</div><!-- .entry-utility -->
-		</div><!-- #post-## -->
-
-		<?php comments_template( '', true ); ?>
+		<?php //comments_template( '', true ); ?>
 
 	<?php endif; // This was the if statement that broke the loop into three parts based on categories. ?>
 

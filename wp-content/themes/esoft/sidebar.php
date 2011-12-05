@@ -7,8 +7,12 @@
  * @since Esoft Themes 1.0
  */
 ?>
-
 		<div id="primary" class="widget-area" role="complementary">
+		<?php
+		if (function_exists("list_upcoming_posts")){
+			list_upcoming_posts();
+		}
+		?>
 			<ul class="xoxo">
 
 <?php
