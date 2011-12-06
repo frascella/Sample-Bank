@@ -87,7 +87,28 @@ function allow_contributor_uploads() {
     $contributor = get_role('contributor');
     $contributor->add_cap('upload_files');
 }
+function get_user_role() {
+    global $current_user;
 
+    $user_roles = $current_user->roles;
+    $user_role = array_shift($user_roles);
+
+    return $user_role;
+}
+function es_remove_menu_entries () {
+    // with WP 3.1 and higher
+    if (get_user_role() != 'administrator'){
+    if ( function_exists( 'remove_menu_page' ) ) {
+        remove_menu_page( 'upload.php' );
+        remove_submenu_page( 'upload.php', 'media-new.php' );
+    } else {
+    // unset comments
+        unset( $GLOBALS['menu'][10] );
+    // unset menuentry Discussion
+        unset( $GLOBALS['submenu']['upload.php'][10] );
+    }
+    }
+}
 if ( ! function_exists( 'esoft_setup' ) ):
 /**
  * Sets up theme defaults and registers support for various WordPress features.
