@@ -71,8 +71,8 @@ unset($theme_update_count, $wordpress_update_count, $update_themes, $update_plug
 
 $menu[4] = array( '', 'read', 'separator1', '', 'wp-menu-separator' );
 
-$menu[5] = array( __('Posts'), 'edit_posts', 'edit.php', '', 'open-if-no-js menu-top menu-icon-post', 'menu-posts', 'div' );
-	$submenu['edit.php'][5]  = array( __('All Posts'), 'edit_posts', 'edit.php' );
+$menu[5] = array( __('Materials'), 'edit_posts', 'edit.php', '', 'open-if-no-js menu-top menu-icon-post', 'menu-posts', 'div' );
+	$submenu['edit.php'][5]  = array( __('All Materials'), 'edit_posts', 'edit.php' );
 	/* translators: add new post */
 	$submenu['edit.php'][10]  = array( _x('Add New', 'post'), 'edit_posts', 'post-new.php' );
 

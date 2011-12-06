@@ -396,8 +396,8 @@ function get_taxonomy_labels( $tax ) {
 		$tax->labels['separate_items_with_commas'] = $tax->helps;
 
 	$nohier_vs_hier_defaults = array(
-		'name' => array( _x( 'Post Tags', 'taxonomy general name' ), _x( 'Categories', 'taxonomy general name' ) ),
-		'singular_name' => array( _x( 'Post Tag', 'taxonomy singular name' ), _x( 'Category', 'taxonomy singular name' ) ),
+		'name' => array( _x( 'Material Tags', 'taxonomy general name' ), _x( 'Categories', 'taxonomy general name' ) ),
+		'singular_name' => array( _x( 'Material Tag', 'taxonomy singular name' ), _x( 'Category', 'taxonomy singular name' ) ),
 		'search_items' => array( __( 'Search Tags' ), __( 'Search Categories' ) ),
 		'popular_items' => array( __( 'Popular Tags' ), null ),
 		'all_items' => array( __( 'All Tags' ), __( 'All Categories' ) ),
