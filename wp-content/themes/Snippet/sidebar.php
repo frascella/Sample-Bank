@@ -21,7 +21,7 @@
         <div class="xboxcontent2">
         
                 <div class="widget-spot">
-                  <?php if (function_exists('dynamic_sidebar') && dynamic_sidebar(2) )  ?>
+                  <?php if (function_exists('dynamic_sidebar') && dynamic_sidebar(1) )  ?>
                 </div> 
     
       			</div>

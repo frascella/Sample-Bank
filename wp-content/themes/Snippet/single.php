@@ -51,8 +51,8 @@
       	 
       
 						<?php if ( get_post_meta($post->ID,'image', true) ) { ?>
-                       <div class="post_img clearfix"> <img src="<?php echo bloginfo('template_url'); ?>/thumb.php?src=<?php echo get_post_meta($post->ID, "image", $single = true); ?>&amp;h=500&amp;w=500&amp;zc=1&amp;q=80<?php echo $thumb_url;?>" alt="<?php the_title(); ?>"    />   
-                        <a href="<?php echo get_post_meta($post->ID, "image", $single = true); ?>" rel="lightbox" title="<?php the_title(); ?>" class="i_zoom2"> <img src="<?php echo bloginfo('template_url'); ?>/images/i_zoom.png" alt="" /> </a> </div>
+                       <!--div class="post_img clearfix"> <img src="<?php echo bloginfo('template_url'); ?>/thumb.php?src=<?php echo get_post_meta($post->ID, "image", $single = true); ?>&amp;h=500&amp;w=500&amp;zc=1&amp;q=80<?php echo $thumb_url;?>" alt="<?php the_title(); ?>"    />   
+                        <a href="<?php echo get_post_meta($post->ID, "image", $single = true); ?>" rel="lightbox" title="<?php the_title(); ?>" class="i_zoom2"> <img src="<?php echo bloginfo('template_url'); ?>/images/i_zoom.png" alt="" /> </a> </div-->
                         
                         
                         

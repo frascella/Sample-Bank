@@ -1313,7 +1313,7 @@ $posts_info = array(
 					"text"				=>	'This wordpress theme automatically resizes it is column to fit your browser width. Also it will increase/decrease columns to fit monitor size',
 					"email"				=>	' 0261 - 252 525 65',
 					"main"				=>	'',
-					"sub"				=>	'Welcome to demo of unique WP theme with flexi columns',
+					"sub"				=>	'Welcome to Esoftflow Gallery Materials',
 					);
 update_option('widget_textbuttonwidget3',$posts_info);
 $sidebars_widgets["sidebar-3"] = array('pt-about-us');
