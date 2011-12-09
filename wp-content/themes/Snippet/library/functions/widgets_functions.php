@@ -2,7 +2,7 @@
 
 // Register widgetized areas
 if ( function_exists('register_sidebar') ) {
-    register_sidebars(1,array('name' => 'Sidebar Left','before_widget' => '<div class="widget">','after_widget' => '</div>','before_title' => '<h3><span>','after_title' => '</span></h3>'));
+//    register_sidebars(1,array('name' => 'Sidebar Left','before_widget' => '<div class="widget">','after_widget' => '</div>','before_title' => '<h3><span>','after_title' => '</span></h3>'));
     register_sidebars(1,array('name' => 'Sidebar right','before_widget' => '<div class="widget">','after_widget' => '</div>','before_title' => '<h3><span>','after_title' => '</span></h3>'));
 	register_sidebars(1,array('name' => 'Front About','before_widget' => '<div class="widget">','after_widget' => '</div>','before_title' => '<h3><span>','after_title' => '</span></h3>'));	
 	register_sidebars(5,array('name' => 'Footer Content %d','before_widget' => '<div class="widget">','after_widget' => '</div>','before_title' => '<h3><span>','after_title' => '</span></h3>'

@@ -146,7 +146,7 @@ add_action('wp_insert_post', 'bizzthemes_metabox_insert_post');
 
 //Custom taxonomy // only works for WP 2.8
 
-add_action( 'init', 'create_bizzthemes_taxonomies', 0 );
+//add_action( 'init', 'create_bizzthemes_taxonomies', 0 );
 
 function create_bizzthemes_taxonomies() {
 	register_taxonomy( 'menu_price', 'post', array( 'hierarchical' => false, 'label' => 'Gallery Price', 'query_var' => true, 'rewrite' => true ) );

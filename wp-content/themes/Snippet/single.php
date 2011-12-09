@@ -1,5 +1,4 @@
 <?php get_header(); ?>
-
    <div class="container"> 
   
   <script src="<?php bloginfo('template_directory'); ?>/library/js/mootools.v1.1.js" type="text/javascript"></script>
