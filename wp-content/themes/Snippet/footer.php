@@ -25,8 +25,6 @@
   <?php bloginfo(); ?>
   , All rights reserved. 
   
-  
-  <p class="by"> <span class="themeby"> Snippet Theme by SD Team</span>  </p>
 <!--/copyright -->
 </div>
 <!--/footer -->
