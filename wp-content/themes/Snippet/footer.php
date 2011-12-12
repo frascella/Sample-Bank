@@ -26,7 +26,7 @@
   , All rights reserved. 
   
   
-  <p class="by"> <span class="themeby"> Snippet Theme by </span>  <span class="templatic">  <a href="http://templatic.com" title="templatic.com">templatic.com</a>  </span></p>
+  
 <!--/copyright -->
 </div>
 <!--/footer -->
