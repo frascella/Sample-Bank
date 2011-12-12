@@ -80,19 +80,20 @@ function bizzthemes_meta_box_content() {
 
 function bizzthemes_meta_box_content_post() {
 	global $post, $bizz_metaboxes_post;
-	echo ''."\n";
+	//echo ''."\n";
 	foreach ($bizz_metaboxes_post as $bizz_metabox) {
 		$bizz_metaboxvalue = get_post_meta($post->ID,$bizz_metabox["name"],true);
 		if ($bizz_metaboxvalue == "" || !isset($bizz_metaboxvalue)) {
 			$bizz_metaboxvalue = $bizz_metabox['default'];
 		}
-		echo "\t".'<div>';
-		echo "\t\t".'<br/><p><strong><label for="'.$bizz_metabox.'">'.$bizz_metabox['label'].':</label></strong></p>'."\n";
-		echo "\t\t".'<p><input size="100" type="'.$bizz_metabox['type'].'" value="'.$bizz_metaboxvalue.'" name="bizzthemes_'.$bizz_metabox["name"].'" id="'.$bizz_metabox.'"/></p>'."\n";
-		echo "\t\t".'<p><span style="font-size:11px">'.$bizz_metabox['desc'].'</span></p>'."\n";	
-		echo "\t".'</div>'."\n";
+		//echo "\t".'<div>';
+		//echo "\t\t".'<br/><p><strong><label for="'.$bizz_metabox.'">'.$bizz_metabox['label'].':</label></strong></p>'."\n";
+        the_editor ( $bizz_metaboxvalue, $bizz_metabox, 'title', true, 2, true );
+		//echo "\t\t".'<p><input size="100" type="'.$bizz_metabox['type'].'" value="'.$bizz_metaboxvalue.'" name="bizzthemes_'.$bizz_metabox["name"].'" id="'.$bizz_metabox.'"/></p>'."\n";
+		//echo "\t\t".'<p><span style="font-size:11px">'.$bizz_metabox['desc'].'</span></p>'."\n";	
+		//echo "\t".'</div>'."\n";
 	}
-	echo ''."\n\n";
+	//echo ''."\n\n";
 }
 
 function bizzthemes_metabox_insert($pID) {
@@ -146,7 +147,7 @@ add_action('wp_insert_post', 'bizzthemes_metabox_insert_post');
 
 //Custom taxonomy // only works for WP 2.8
 
-//add_action( 'init', 'create_bizzthemes_taxonomies', 0 );
+add_action( 'init', 'create_bizzthemes_taxonomies', 0 );
 
 function create_bizzthemes_taxonomies() {
 	register_taxonomy( 'menu_price', 'post', array( 'hierarchical' => false, 'label' => 'Gallery Price', 'query_var' => true, 'rewrite' => true ) );
