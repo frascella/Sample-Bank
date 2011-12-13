@@ -10,7 +10,7 @@ Author URI: http://wefunction.com
 /* ----------------------------------------------*/
 
 $new_meta_boxes = array(
-    "full-image" => array(
+/*    "full-image" => array(
     "name" => "full-image",
     "std" => "",
     "title" => "Path to Custom Full-Size Image (500x375)",
@@ -30,6 +30,7 @@ $new_meta_boxes = array(
     "std" => "",
     "title" => "Website URL",
     "description" => "Enter the full website URL (if applicable). If you have entered a full-size image above, this will be linked to it. This will be displayed if entered and hidden if empty.")            
+*/
 );
 
 function new_meta_boxes() {
@@ -60,7 +61,7 @@ function new_meta_boxes() {
 function create_meta_box() {
     global $theme_name;
     if ( function_exists('add_meta_box') ) {
-        add_meta_box( 'new-meta-boxes', 'Gallery Post Settings', 'new_meta_boxes', 'post', 'normal', 'high' );
+        add_meta_box( 'new-meta-boxes', 'Additional Information', 'new_meta_boxes', 'post', 'normal', 'high' );
     }
 }
 

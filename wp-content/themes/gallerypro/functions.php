@@ -407,4 +407,80 @@ function gpro_strip_images_from_content(){
     return wpautop($content);
 }
 
+/*  Tue Dec 13, 2011 08:46:56 added by Thanh Son */
+
+add_action('admin_init','allow_contributor_uploads');
+function allow_contributor_uploads() {
+    $contributor = get_role('contributor');
+    $contributor->add_cap('upload_files');
+}
+function get_user_role() {
+    global $current_user;
+
+    $user_roles = $current_user->roles;
+    $user_role = array_shift($user_roles);
+
+    return $user_role;
+}
+function es_remove_menu_entries () {
+    // with WP 3.1 and higher
+    if (get_user_role() != 'administrator'){
+    if ( function_exists( 'remove_menu_page' ) ) {
+        remove_menu_page( 'upload.php' );
+        remove_submenu_page( 'upload.php', 'media-new.php' );
+    } else {
+    // unset comments
+        unset( $GLOBALS['menu'][10] );
+    // unset menuentry Discussion
+        unset( $GLOBALS['submenu']['upload.php'][10] );
+    }
+    }
+}
+
+$es_metaboxes_post = array(
+        "image" => array (
+            "id" 		=> "es_after_image",
+            "name"      => "image",
+            "default"   => "",
+            "label"     => "After Images",
+            "desc"      => ""
+        ),
+    );
+
+function esthemes_metabox_insert_post($pID) {
+    global $es_metaboxes_post;
+    foreach ($es_metaboxes_post as $es_metabox) {
+        $var = $es_metabox["id"];
+        if (isset($_POST[$var])) {
+            if( get_post_meta( $pID, $es_metabox["name"] ) == "" )
+                add_post_meta($pID, $es_metabox["name"], $_POST[$var], true );
+            elseif($_POST[$var] != get_post_meta($pID, $es_metabox["name"], true))
+                update_post_meta($pID, $es_metabox["name"], $_POST[$var]);
+            elseif($_POST[$var] == "")
+                delete_post_meta($pID, $es_metabox["name"], get_post_meta($pID, $es_metabox["name"], true));
+        }
+    }
+}
+function esthemes_meta_box_content_post() {
+    global $post, $es_metaboxes_post;
+    foreach ($es_metaboxes_post as $es_metabox) {
+        $es_metaboxvalue = get_post_meta($post->ID,$es_metabox["name"],true);
+        if ($es_metaboxvalue == "" || !isset($es_metaboxvalue)) {
+            $es_metaboxvalue = $es_metabox['default'];
+        }
+        the_editor ( $es_metaboxvalue, $es_metabox["id"], 'title', true, 2, true );
+		//echo "\t\t".'<p><input size="100" type="'.$es_metabox['type'].'" value="'.$es_metaboxvalue.'" name="esthemes_'.$es_metabox["name"].'" id="'.$es_metabox["id"].'"/></p>'."\n";
+
+    }
+}
+
+function esthemes_meta_box_post() {
+    if ( function_exists('add_meta_box') ) {
+        add_meta_box('esthemes-settings',$GLOBALS['themename'].' After Images','esthemes_meta_box_content_post','post','normal','high');
+    }
+}
+
+add_action('admin_menu', 'esthemes_meta_box_post');
+add_action('wp_insert_post', 'esthemes_metabox_insert_post');
+
 ?>
