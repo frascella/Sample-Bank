@@ -436,7 +436,7 @@ function es_remove_menu_entries () {
     }
     }
 }
-
+/*
 $es_metaboxes_post = array(
         "image" => array (
             "id" 		=> "es_after_image",
@@ -469,8 +469,6 @@ function esthemes_meta_box_content_post() {
             $es_metaboxvalue = $es_metabox['default'];
         }
         the_editor ( $es_metaboxvalue, $es_metabox["id"], 'title', true, 2, true );
-		//echo "\t\t".'<p><input size="100" type="'.$es_metabox['type'].'" value="'.$es_metaboxvalue.'" name="esthemes_'.$es_metabox["name"].'" id="'.$es_metabox["id"].'"/></p>'."\n";
-
     }
 }
 
@@ -483,4 +481,10 @@ function esthemes_meta_box_post() {
 add_action('admin_menu', 'esthemes_meta_box_post');
 add_action('wp_insert_post', 'esthemes_metabox_insert_post');
 
+function my_default_editor() {
+	$r = 'tinymce'; // html or tinymce
+	return $r;
+}
+add_filter( 'wp_default_editor', 'my_default_editor' );
+*/
 ?>

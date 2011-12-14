@@ -1249,7 +1249,10 @@ function get_media_item( $attachment_id, $args = null ) {
 	foreach ( $form_fields as $key => $val ) {
 		if ( 'menu_order' == $key ) {
 			if ( $gallery )
-				$order = "<div class='menu_order'> <input class='menu_order_input' type='text' id='attachments[$attachment_id][menu_order]' name='attachments[$attachment_id][menu_order]' value='" . esc_attr( $val['value'] ). "' /></div>";
+			{
+				$order = " <div class='menu_order'><input class='menu_order_input' type='hidden' value='" . esc_attr( $val['value'] ). "' id='attachments[$attachment_id][menu_order]' name='attachments[$attachment_id][menu_order]' />";
+				$order = $order. " <input class='checkbox' type='checkbox' value='" . esc_attr( $val['value'] ). "'/></div>";
+			}
 			else
 				$order = "<input type='hidden' name='attachments[$attachment_id][menu_order]' value='" . esc_attr( $val['value'] ) . "' />";
 
@@ -1814,7 +1817,7 @@ jQuery(function($){
 <table class="widefat" cellspacing="0">
 <thead><tr>
 <th><?php _e('Media'); ?></th>
-<th class="order-head"><?php _e('Order'); ?></th>
+<th class="order-head"><?php _e('Before/After'); ?></th>
 <th class="actions-head"><?php _e('Actions'); ?></th>
 </tr></thead>
 </table>
@@ -1823,12 +1826,27 @@ jQuery(function($){
 <?php echo get_media_items($post_id, $errors); ?>
 </div>
 
+<p>Please, mark checkbox if it is After Image</p>
 <p class="ml-submit">
 <?php submit_button( __( 'Save all changes' ), 'button savebutton', 'save', false, array( 'id' => 'save-all', 'style' => 'display: none;' ) ); ?>
 <input type="hidden" name="post_id" id="post_id" value="<?php echo (int) $post_id; ?>" />
 <input type="hidden" name="type" value="<?php echo esc_attr( $GLOBALS['type'] ); ?>" />
 <input type="hidden" name="tab" value="<?php echo esc_attr( $GLOBALS['tab'] ); ?>" />
 </p>
+<script type='text/javascript'>
+var $j = jQuery.noConflict();
+$j(document).ready(function(){ 
+$j('input:checkbox').each(function(){
+$j(this).attr('checked',function(){return ($j(this).val()!='0')?true:false;});
+$j(this).prev('input').val(function(index, value){ return ($j(this).val() != '1')?'0':'1';});
+});
+});
+$j('input:checkbox').click(function() {
+	$j(this).val(function(index, value){ return ($j(this).val() != '0')?'0':'1';});
+	$j(this).prev('input').val(function(index, value){ return ($j(this).val() != '0')?'0':'1';});
+});
+
+</script>
 
 <div id="gallery-settings" style="display:none;">
 <div class="title"><?php _e('Gallery Settings'); ?></div>

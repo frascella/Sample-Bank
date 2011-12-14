@@ -1,6 +1,7 @@
 <?php
 global $up_options;
-get_header() ?>
+get_header();
+?>
 <div id="container">    
     <div id="content">
         <?php
