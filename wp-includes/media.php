@@ -637,8 +637,9 @@ function wp_get_attachment_image_src($attachment_id, $size='thumbnail', $icon = 
 function wp_get_attachment_image($attachment_id, $size = 'thumbnail', $icon = false, $attr = '') {
 
 	$html = '';
-	$image = wp_get_attachment_image_src($attachment_id, $size, $icon);
-	if ( $image ) {
+    
+    $image = wp_get_attachment_image_src($attachment_id, $size, $icon);
+    if ( $image ) {
 		list($src, $width, $height) = $image;
 		$hwstring = image_hwstring($width, $height);
 		if ( is_array($size) )
@@ -650,22 +651,31 @@ function wp_get_attachment_image($attachment_id, $size = 'thumbnail', $icon = fa
 			'alt'	=> trim(strip_tags( get_post_meta($attachment_id, '_wp_attachment_image_alt', true) )), // Use Alt field first
 			'title'	=> trim(strip_tags( $attachment->post_title )),
 		);
-		if ( empty($default_attr['alt']) )
+        if ( empty($default_attr['alt']) )
 			$default_attr['alt'] = trim(strip_tags( $attachment->post_excerpt )); // If not, Use the Caption
 		if ( empty($default_attr['alt']) )
 			$default_attr['alt'] = trim(strip_tags( $attachment->post_title )); // Finally, use the title
 
 		$attr = wp_parse_args($attr, $default_attr);
-		$attr = apply_filters( 'wp_get_attachment_image_attributes', $attr, $attachment );
+        $attr = apply_filters( 'wp_get_attachment_image_attributes', $attr, $attachment );
 		$attr = array_map( 'esc_attr', $attr );
-		$html = rtrim("<img $hwstring");
-		foreach ( $attr as $name => $value ) {
-			$html .= " $name=" . '"' . $value . '"';
-		}
-		$html .= ' />';
+        if ($attachment->menu_order == 1 && $size == 'thumbnail')
+        {
+            $html = rtrim("<img $hwstring");
+            foreach ( $attr as $name => $value ) {
+            $html .= " $name=" . '"' . $value . '"';
+            }
+            $html .= ' />';
+        } else if ($attachment->menu_order == 0 && $size == 'single')
+        {
+            $html = rtrim("<img $hwstring");
+            foreach ( $attr as $name => $value ) {
+            $html .= " $name=" . '"' . $value . '"';
+            }
+            $html .= ' />';
+        }
 	}
-
-	return $html;
+    return $html;
 }
 
 /**
@@ -850,22 +860,27 @@ function gallery_shortcode($attr) {
 
 	$i = 0;
 	foreach ( $attachments as $id => $attachment ) {
-		$link = isset($attr['link']) && 'file' == $attr['link'] ? wp_get_attachment_link($id, $size, false, false) : wp_get_attachment_link($id, $size, true, false);
+        if ($attachment->menu_order == 1)
+        {
+            $link = isset($attr['link']) && 'file' == $attr['link'] ? wp_get_attachment_link($id, $size, false, false) : wp_get_attachment_link($id, $size, true, false);
 
-		$output .= "<{$itemtag} class='gallery-item'>";
-		$output .= "
-			<{$icontag} class='gallery-icon'>
-				$link
-			</{$icontag}>";
-		if ( $captiontag && trim($attachment->post_excerpt) ) {
-			$output .= "
-				<{$captiontag} class='wp-caption-text gallery-caption'>
-				" . wptexturize($attachment->post_excerpt) . "
-				</{$captiontag}>";
-		}
-		$output .= "</{$itemtag}>";
-		if ( $columns > 0 && ++$i % $columns == 0 )
-			$output .= '<br style="clear: both" />';
+		    $output .= "<{$itemtag} class='gallery-item'>";
+		    $output .= "
+			    <{$icontag} class='gallery-icon'>
+				    $link
+			    </{$icontag}>";
+		    if ( $captiontag && trim($attachment->post_excerpt) ) {
+			    $output .= "
+				    <{$captiontag} class='wp-caption-text gallery-caption'>
+				    " . wptexturize($attachment->post_excerpt) . "
+				    </{$captiontag}>";
+		    }
+		    $output .= "</{$itemtag}>";
+		    if ( $columns > 0)
+			    $output .= '<br style="clear: both" /><ul class="meta">
+                <li>Download</li>
+                </ul>';
+        }
 	}
 
 	$output .= "

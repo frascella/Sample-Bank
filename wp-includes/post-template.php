@@ -163,10 +163,10 @@ function get_the_guid( $id = 0 ) {
  * @param string $stripteaser Optional. Teaser content before the more text.
  */
 function the_content($more_link_text = null, $stripteaser = 0) {
-	$content = get_the_content($more_link_text, $stripteaser);
+    $content = get_the_content($more_link_text, $stripteaser);
 	$content = apply_filters('the_content', $content);
 	$content = str_replace(']]>', ']]&gt;', $content);
-	echo $content;
+    echo $content;
 }
 
 /**
@@ -199,12 +199,12 @@ function get_the_content($more_link_text = null, $stripteaser = 0) {
 	$content = $pages[$page-1];
 	if ( preg_match('/<!--more(.*?)?-->/', $content, $matches) ) {
 		$content = explode($matches[0], $content, 2);
-		if ( !empty($matches[1]) && !empty($more_link_text) )
+        if ( !empty($matches[1]) && !empty($more_link_text) )
 			$more_link_text = strip_tags(wp_kses_no_null(trim($matches[1])));
 
 		$hasTeaser = true;
 	} else {
-		$content = array($content);
+        $content = array($content);
 	}
 	if ( (false !== strpos($post->post_content, '<!--noteaser-->') && ((!$multipage) || ($page==1))) )
 		$stripteaser = 1;
@@ -224,8 +224,8 @@ function get_the_content($more_link_text = null, $stripteaser = 0) {
 	}
 	if ( $preview ) // preview fix for javascript bug with foreign languages
 		$output =	preg_replace_callback('/\%u([0-9A-F]{4})/', '_convert_urlencoded_to_entities', $output);
-
-	return $output;
+    
+    return $output;
 }
 
 /**
