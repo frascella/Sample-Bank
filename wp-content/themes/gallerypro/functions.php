@@ -217,48 +217,52 @@ function postimage($size=medium) {
     } 
 }
 
-//get images
+//get images hoang
 function postimages($size = 'single') {
     
     global $up_options;
-            /* Insert Image from Custom Field Full-Width Option */
-            global $featured_slider_image;
-            if($featured_slider_image) echo '<div class="jFlowSlideContainer"><a class="thickbox" rel="' . get_the_ID() . '" href="' . $featured_slider_image['large'] . '">' . $featured_slider_image['single'] . '</a></div>';
-            
-            /* Insert Image from Custom Field Full-Width Option */
-            global $custom_field_slider_image;
-            if($custom_field_slider_image):
-                echo '<div class="jFlowSlideContainer"><a class="thickbox" rel="' . get_the_ID() . '" href="' . $custom_field_slider_image . '"><img src="' . $custom_field_slider_image . '" height="375" width="500" alt="'.get_the_title().'" /></a></div>';
-                $has_image = true;
-            endif;
-            
-            if ($images = get_children(array('post_parent' => get_the_ID(), 'post_type' => 'attachment', 'order' => 'ASC', 'post_mime_type' => 'image',))){
-                /* Insert Images from Attachments */
-                foreach( $images as $image ) {
-                    $attachmentimage_medium = wp_get_attachment_image( $image->ID, 'single' ); 
-                    $attachmentimage_src = wp_get_attachment_image_src( $image->ID, $size );
-                    $attachmentimage_large_src = wp_get_attachment_image_src( $image->ID, 'large' );
-                    if($attachmentimage_medium != $featured_slider_image['single']):
-                        echo '<div class="jFlowSlideContainer"><a class="thickbox" rel="' . get_the_ID() . '" href="' . $attachmentimage_large_src[0] . '">' . $attachmentimage_medium . '</a></div>';
-                    endif;
-                }
-                $has_image = true;
+    /* Insert Image from Custom Field Full-Width Option */
+    global $featured_slider_image;
+    $string = '';
+    if($featured_slider_image) echo '<div class="jFlowSlideContainer"><a class="thickbox" rel="' . get_the_ID() . '" href="' . $featured_slider_image['large'] . '">' . $featured_slider_image['single'] . '</a></div>';
+    
+    /* Insert Image from Custom Field Full-Width Option */
+    global $custom_field_slider_image;
+    if($custom_field_slider_image):
+        $string .= '<div class="jFlowSlideContainer"><a class="thickbox" rel="' . get_the_ID() . '" href="' . $custom_field_slider_image . '"><img src="' . $custom_field_slider_image . '" height="375" width="500" alt="'.get_the_title().'" /></a></div>';
+        $has_image = true;
+    endif;
+    
+    if ($images = get_children(array('post_parent' => get_the_ID(), 'post_type' => 'attachment', 'order' => 'ASC', 'post_mime_type' => 'image',))){
+        /* Insert Images from Attachments */
+        foreach( $images as $image ) {
+            if ($image->menu_order == 0)
+            {
+                $attachmentimage_medium = wp_get_attachment_image( $image->ID, 'single' ); 
+                $attachmentimage_src = wp_get_attachment_image_src( $image->ID, $size );
+                $attachmentimage_large_src = wp_get_attachment_image_src( $image->ID, 'large' );
+                if($attachmentimage_medium != $featured_slider_image['single']):
+                    $string .= '<div class="jFlowSlideContainer"><a class="thickbox" rel="' . get_the_ID() . '" href="' . $attachmentimage_large_src[0] . '">' . $attachmentimage_medium . '</a></div>';
+                endif;
             }
-            
-            /* Insert Images from the Content Area */
-            global $content_slider_images;
-            if(is_array($content_slider_images)):
-                foreach($content_slider_images as $image):
-                    echo '<div class="jFlowSlideContainer"><a class="thickbox" rel="' . get_the_ID() . '" href="' . $image . '"><img src="' . $image . '" height="375" width="500" alt="'.get_the_title().'" /></a></div>';
-                endforeach;
-                $has_image = true;
-            endif;
-            
-            /* Default Image */
-            if(empty($has_image)):
-                echo '<img src="' . get_bloginfo('template_directory') . '/images/default_single.jpg" alt=""/>';
-            endif;
-	 
+        }
+        $has_image = true;
+    }
+    
+    /* Insert Images from the Content Area */
+    global $content_slider_images;
+    if(is_array($content_slider_images)):
+        foreach($content_slider_images as $image):
+            $string .= '<div class="jFlowSlideContainer"><a class="thickbox" rel="' . get_the_ID() . '" href="' . $image . '"><img src="' . $image . '" height="375" width="500" alt="'.get_the_title().'" /></a></div>';
+        endforeach;
+        $has_image = true;
+    endif;
+    
+    /* Default Image */
+    if(empty($has_image)):
+        $string .= '<img src="' . get_bloginfo('template_directory') . '/images/default_single.jpg" alt=""/>';
+    endif;
+	echo $string; 
 }
 
 //check any attachment 
