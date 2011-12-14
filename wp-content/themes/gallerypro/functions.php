@@ -413,6 +413,16 @@ function gpro_strip_images_from_content(){
 
 /*  Tue Dec 13, 2011 08:46:56 added by Thanh Son */
 
+add_filter('media_upload_tabs', 'remove_media_type_url_tab');
+function remove_media_type_url_tab($tabs) {
+    unset($tabs['type_url']);
+    return $tabs;
+}
+add_filter('media_upload_tabs', 'remove_media_library_tab');
+function remove_media_library_tab($tabs) {
+    unset($tabs['library']);
+    return $tabs;
+}
 add_action('admin_init','allow_contributor_uploads');
 function allow_contributor_uploads() {
     $contributor = get_role('contributor');
@@ -426,6 +436,7 @@ function get_user_role() {
 
     return $user_role;
 }
+add_action('admin_init','es_remove_menu_entries');
 function es_remove_menu_entries () {
     // with WP 3.1 and higher
     if (get_user_role() != 'administrator'){
