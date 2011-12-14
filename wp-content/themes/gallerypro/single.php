@@ -37,11 +37,13 @@ get_header() ?>
             <div class="artwork-container">
                 <div class="entry-artwork">
                     <?php do_action('single_postmedia'); ?>
+                    <a>Download All</a>
                 </div>
             </div>
+            
             <?php get_sidebar('single-insert') ?>
             <?php gpro_navigation_below();?>
-            <?php gpro_comments_template(); ?>
+            <?php //gpro_comments_template(); ?>
             <?php get_sidebar('single-bottom') ?>
         <?php endwhile; ?>
     </div><!-- #content -->
