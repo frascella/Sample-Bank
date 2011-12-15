@@ -36,7 +36,7 @@ function pagenavi_textdomain() {
 
 
 ### Function: Page Navigation Option Menu
-add_action('admin_menu', 'pagenavi_menu');
+//add_action('admin_menu', 'pagenavi_menu');
 function pagenavi_menu() {
 	if (function_exists('add_options_page')) {
 		add_options_page(__('PageNavi', 'wp-pagenavi'), __('PageNavi', 'wp-pagenavi'), 'manage_options', 'wp-pagenavi/pagenavi-options.php') ;

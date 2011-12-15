@@ -57,7 +57,7 @@ require_once(THEMELIB . '/extensions/shortcodes.php');
 require_once(THEMELIB . '/extensions/get-the-image.php');
 
 // Get 
-require_once(THEMELIB . '/extensions/gallery-metaboxes.php');
+require_once(THEMELIB . '/extensions/image-list.php');
 
 // Adds filters for the description/meta content in archives.php
 add_filter( 'archive_meta', 'wptexturize' );
@@ -427,7 +427,7 @@ add_action('admin_init','remove_post_editor');
 function remove_post_editor(){
         print '
             <style type="text/css">
-                #edButtonHTML, #edButtonPreview, #post-status-info, #editorcontainer{
+                #edButtonHTML, #edButtonPreview, #post-status-info, #editorcontainer, #add_media, #add_audio{
                     display:none;
                 }
 
@@ -448,7 +448,19 @@ add_action('admin_init','allow_contributor_uploads');
 function allow_contributor_uploads() {
     $contributor = get_role('contributor');
     $contributor->add_cap('upload_files');
+    $contributor->remove_cap('publish_posts');
+    $contributor->remove_cap('manage_categories');
+    $contributor->remove_cap('edit_pages');
+    $contributor->remove_cap('manage_comments');
 }
+add_action('admin_init','editor_permission');
+function editor_permission() {
+    $editor = get_role('editor');
+    $editor->remove_cap('edit_pages');
+    $editor->remove_cap('moderate_comments');
+    $editor->remove_cap('edit_comments');
+}
+
 function get_user_role() {
     global $current_user;
 
@@ -463,6 +475,9 @@ function es_remove_menu_entries () {
     if (get_user_role() != 'administrator'){
     if ( function_exists( 'remove_menu_page' ) ) {
         remove_menu_page( 'upload.php' );
+        remove_menu_page( 'tools.php' );
+        remove_menu_page( 'link-manager.php' );
+        remove_menu_page( 'edit-comments.php' );
         remove_submenu_page( 'upload.php', 'media-new.php' );
     } else {
     // unset comments
@@ -472,55 +487,72 @@ function es_remove_menu_entries () {
     }
     }
 }
-/*
-$es_metaboxes_post = array(
-        "image" => array (
-            "id" 		=> "es_after_image",
-            "name"      => "image",
-            "default"   => "",
-            "label"     => "After Images",
-            "desc"      => ""
-        ),
-    );
-
-function esthemes_metabox_insert_post($pID) {
-    global $es_metaboxes_post;
-    foreach ($es_metaboxes_post as $es_metabox) {
-        $var = $es_metabox["id"];
-        if (isset($_POST[$var])) {
-            if( get_post_meta( $pID, $es_metabox["name"] ) == "" )
-                add_post_meta($pID, $es_metabox["name"], $_POST[$var], true );
-            elseif($_POST[$var] != get_post_meta($pID, $es_metabox["name"], true))
-                update_post_meta($pID, $es_metabox["name"], $_POST[$var]);
-            elseif($_POST[$var] == "")
-                delete_post_meta($pID, $es_metabox["name"], get_post_meta($pID, $es_metabox["name"], true));
+function es_meta_boxes() {
+    global $post, $new_meta_boxes, $up_options;
+    if($up_options->custom_metadata):
+        foreach($up_options->custom_metadata as $metadata){
+            $metaslug = "custom-".strtolower(preg_replace('/ /', '_', $metadata));
+            $metabox = array(
+              "name" => $metaslug,
+              "std" => "",
+              "title" => $metadata,
+              "description" => "");
+            if (sizeof($new_meta_boxes)==sizeof($up_options->custom_metadata))
+                break;
+            $new_meta_boxes[] = $metabox;
         }
-    }
-}
-function esthemes_meta_box_content_post() {
-    global $post, $es_metaboxes_post;
-    foreach ($es_metaboxes_post as $es_metabox) {
-        $es_metaboxvalue = get_post_meta($post->ID,$es_metabox["name"],true);
-        if ($es_metaboxvalue == "" || !isset($es_metaboxvalue)) {
-            $es_metaboxvalue = $es_metabox['default'];
-        }
-        the_editor ( $es_metaboxvalue, $es_metabox["id"], 'title', true, 2, true );
+    endif;
+    foreach($new_meta_boxes as $meta_box) {
+        $meta_box_value = get_post_meta($post->ID, $meta_box['name'], true);
+        if($meta_box_value == "") $meta_box_value = $meta_box['std'];
+        echo'<input type="hidden" name="'.$meta_box['name'].'_noncename" id="'.$meta_box['name'].'_noncename" value="'.wp_create_nonce( plugin_basename(__FILE__) ).'" />';
+        echo'<label style="font-weight: bold; display: block; padding: 5px 0 2px 2px" for="'.$meta_box['name'].'">'.$meta_box['title'].'</label>';
+        //echo'<input type="text" name="'.$meta_box['name'].'" value="'.$meta_box_value.'" size="55" /><br />';
+        echo '<textarea name="'.$meta_box['name'].'" cols="60" rows="3">'.$meta_box_value.'</textarea><br />';
+        echo'<p><label for="'.$meta_box['name'].'">'.$meta_box['description'].'</label></p>';
     }
 }
 
-function esthemes_meta_box_post() {
+function create_meta_box() {
+//    global $theme_name;
     if ( function_exists('add_meta_box') ) {
-        add_meta_box('esthemes-settings',$GLOBALS['themename'].' After Images','esthemes_meta_box_content_post','post','normal','high');
+        add_meta_box( 'es-meta-boxes', 'Material Information', 'es_meta_boxes', 'post', 'normal', 'high' );
     }
 }
 
-add_action('admin_menu', 'esthemes_meta_box_post');
-add_action('wp_insert_post', 'esthemes_metabox_insert_post');
+function save_postdata( $post_id ) {
+    global $post, $new_meta_boxes, $up_options;
+    if($up_options->custom_metadata):
+        foreach($up_options->custom_metadata as $metadata){
+            $metaslug = "custom-".strtolower(preg_replace('/ /', '_', $metadata));
+            $metabox = array(
+                "name" => $metaslug,
+                "std" => "",
+                "title" => $metadata,
+                "description" => "");
+            $new_meta_boxes[] = $metabox;
+        }
+    endif;
+    foreach($new_meta_boxes as $meta_box) {
+        // Verify
+        if ( !wp_verify_nonce( $_POST[$meta_box['name'].'_noncename'], plugin_basename(__FILE__) )) {
+            return $post_id;
+        }
 
-function my_default_editor() {
-	$r = 'tinymce'; // html or tinymce
-	return $r;
+        if ( 'page' == $_POST['post_type'] ) {
+            if ( !current_user_can( 'edit_page', $post_id )) return $post_id;
+        } else {
+            if ( !current_user_can( 'edit_post', $post_id )) return $post_id;
+        }
+        $data = $_POST[$meta_box['name']];
+        if(get_post_meta($post_id, $meta_box['name']) == "") add_post_meta($post_id, $meta_box['name'], $data, true);
+        elseif($data != get_post_meta($post_id, $meta_box['name'], true)) update_post_meta($post_id, $meta_box['name'], $data);
+        elseif($data == "") delete_post_meta($post_id, $meta_box['name'], get_post_meta($post_id, $meta_box['name'], true));
+    }
 }
-add_filter( 'wp_default_editor', 'my_default_editor' );
-*/
+add_action('admin_menu', 'create_meta_box');
+add_action('save_post', 'save_postdata');
+// remove update notice
+add_filter( 'pre_site_transient_update_core', create_function( '$a', "return null;" ) );
+
 ?>

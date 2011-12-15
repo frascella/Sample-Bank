@@ -1339,11 +1339,11 @@ function get_media_item( $attachment_id, $args = null ) {
 		$calling_post_id = $post->post_parent;
 	if ( 'image' == $type && $calling_post_id && current_theme_supports( 'post-thumbnails', get_post_type( $calling_post_id ) ) && get_post_thumbnail_id( $calling_post_id ) != $attachment_id ) {
 		$ajax_nonce = wp_create_nonce( "set_post_thumbnail-$calling_post_id" );
-		$thumbnail = "<a class='wp-post-thumbnail' id='wp-post-thumbnail-" . $attachment_id . "' href='#' onclick='WPSetAsThumbnail(\"$attachment_id\", \"$ajax_nonce\");return false;'>" . esc_html__( "Use as featured image" ) . "</a>";
+		$thumbnail = "<!--a class='wp-post-thumbnail' id='wp-post-thumbnail-" . $attachment_id . "' href='#' onclick='WPSetAsThumbnail(\"$attachment_id\", \"$ajax_nonce\");return false;'>" . esc_html__( "Use as featured image" ) . "</a-->";
 	}
 
 	if ( ( $send || $thumbnail || $delete ) && !isset( $form_fields['buttons'] ) )
-		$form_fields['buttons'] = array( 'tr' => "\t\t<tr class='submit'><td></td><td class='savesend'>$send $thumbnail $delete</td></tr>\n" );
+		$form_fields['buttons'] = array( 'tr' => "\t\t<tr class='submit'><td></td><td class='savesend'>$thumbnail $delete</td></tr>\n" );
 
 	$hidden_fields = array();
 
@@ -1828,6 +1828,8 @@ jQuery(function($){
 </div>
 <p class="ml-submit">
 <?php submit_button( __( 'Save all changes' ), 'button savebutton', 'save', false, array( 'id' => 'save-all', 'style' => 'display: none;' ) ); ?>
+<?php submit_button( __( 'Complete Upload' ), 'button completeuploadbutton', 'complete_upload', false, array(  'onClick'=>'javascript:window.parent.tb_remove()', 'id' => 'save-all', 'style' => 'display: none;margin-left:400px;' ) ); ?>
+<!--input type="button" name="complete_upload" id="complete_upload" value="Complete Upload" onClick="javascript:window.parent.tb_remove()" style="margin-left:400px;"/-->
 <input type="hidden" name="post_id" id="post_id" value="<?php echo (int) $post_id; ?>" />
 <input type="hidden" name="type" value="<?php echo esc_attr( $GLOBALS['type'] ); ?>" />
 <input type="hidden" name="tab" value="<?php echo esc_attr( $GLOBALS['tab'] ); ?>" />
@@ -2356,6 +2358,127 @@ function media_upload_bypass_url($url) {
 		$url = add_query_arg('flash', intval($_REQUEST['flash']));
 	return $url;
 }
+/*  Thu Dec 15, 2011 18:31:43 added by Thanh Son */
+function media_upload_image_list(){
+    $post_id = intval($_REQUEST['post_id']);
+	echo show_image_items($post_id, $error);
+}
+function show_image_item( $attachment_id, $args = null ) {
+	global $redir_tab;
+	if ( ( $attachment_id = intval( $attachment_id ) ) && $thumb_url = wp_get_attachment_image_src( $attachment_id, 'thumbnail', true ) )
+		$thumb_url = $thumb_url[0];
+	else
+		$thumb_url = false;
+
+	$post = get_post( $attachment_id );
+
+	$default_args = array( 'errors' => null, 'send' => $post->post_parent ? post_type_supports( get_post_type( $post->post_parent ), 'editor' ) : true, 'delete' => true, 'toggle' => true, 'show_title' => true );
+	$args = wp_parse_args( $args, $default_args );
+	$args = apply_filters( 'get_media_item_args', $args );
+	extract( $args, EXTR_SKIP );
+
+	$toggle_on  = __( 'Show' );
+	$toggle_off = __( 'Hide' );
+
+	$filename = esc_html( basename( $post->guid ) );
+	$title = esc_attr( $post->post_title );
+
+	if ( $_tags = get_the_tags( $attachment_id ) ) {
+		foreach ( $_tags as $tag )
+			$tags[] = $tag->name;
+		$tags = esc_attr( join( ', ', $tags ) );
+	}
+
+	$post_mime_types = get_post_mime_types();
+	$keys = array_keys( wp_match_mime_types( array_keys( $post_mime_types ), $post->post_mime_type ) );
+	$type = array_shift( $keys );
+	$type_html = "<input type='hidden' id='type-of-$attachment_id' value='" . esc_attr( $type ) . "' />";
+
+	$form_fields = get_attachment_fields_to_edit( $post, $errors );
+
+	if ( $toggle ) {
+		$class = empty( $errors ) ? 'startclosed' : 'startopen';
+		$toggle_links = "
+	<a class='toggle describe-toggle-on' href='#'>$toggle_on</a>
+	<a class='toggle describe-toggle-off' href='#'>$toggle_off</a>";
+	} else {
+		$class = 'form-table';
+		$toggle_links = '';
+	}
+
+	$display_title = ( !empty( $title ) ) ? $title : $filename; // $title shouldn't ever be empty, but just in case
+	$display_title = $show_title ? "<div class='filename new'><span class='title'>" . wp_html_excerpt( $display_title, 60 ) . "</span></div>" : '';
+
+	//$gallery = ( ( isset( $_REQUEST['tab'] ) && 'gallery' == $_REQUEST['tab'] ) || ( isset( $redir_tab ) && 'gallery' == $redir_tab ) );
+	$order = '';
+
+	foreach ( $form_fields as $key => $val ) {
+		if ( 'menu_order' == $key ) {
+            $image_type = (esc_attr( $val['value'] ) == '0')? "Before Image": "After Image"; 
+			$order = $image_type;
+			unset( $form_fields['menu_order'] );
+			break;
+		}
+	}
+
+	$media_dims = '';
+	$meta = wp_get_attachment_metadata( $post->ID );
+	if ( is_array( $meta ) && array_key_exists( 'width', $meta ) && array_key_exists( 'height', $meta ) )
+		$media_dims .= "<span id='media-dims-$post->ID'>{$meta['width']}&nbsp;&times;&nbsp;{$meta['height']}</span> ";
+	$media_dims = apply_filters( 'media_meta', $media_dims, $post );
+
+    $image_src = wp_get_attachment_image_src( $attachment_id,300);
+	$attachment_url = get_permalink( $attachment_id );
+
+	$item = "<div id='image-list-box'>
+	$type_html
+	$display_title
+	<table class='slidetoggle describe $class'>
+		<thead class='media-item-info' id='media-head-$post->ID'>
+		<tr valign='top'>
+			<td class='A1B1' id='thumbnail-head-$post->ID'>
+			<p><a href='".$image_src[0]."' target='_blank'><img class='thumbnail' src='$thumb_url' alt='' style='margin-top: 3px' /></a></p>
+			</td>
+			<td>
+			<p><strong>" . __('Title:') . "</strong> $title</p>
+			<p><strong>" . __('Image Type:') . "</strong> $order</p>
+			<p><strong>" . __('File name:') . "</strong> $filename</p>
+			<p><strong>" . __('File type:') . "</strong> $post->post_mime_type</p>
+			<p><strong>" . __('Upload date:') . "</strong> " . mysql2date( get_option('date_format'), $post->post_date ). '</p>';
+			if ( !empty( $media_dims ) )
+				$item .= "<p><strong>" . __('Dimensions:') . "</strong> $media_dims</p>\n";
+
+			$item .= "</td></tr>\n</thead></table></div>";
+	return $item;
+}
+// Image List
+function show_image_items( $post_id, $errors ) {
+    $attachments = array();
+    if ( $post_id ) {
+        $post = get_post($post_id);
+        if ( $post && $post->post_type == 'attachment' )
+            $attachments = array($post->ID => $post);
+        else
+            $attachments = get_children( array( 'post_parent' => $post_id, 'post_type' => 'attachment', 'orderby' => 'menu_order ASC, ID', 'order' => 'DESC') );
+    } else {
+        if ( is_array($GLOBALS['wp_the_query']->posts) )
+            foreach ( $GLOBALS['wp_the_query']->posts as $attachment )
+                $attachments[$attachment->ID] = $attachment;
+    }
+
+    $output = '';
+    foreach ( (array) $attachments as $id => $attachment ) {
+        if ( $attachment->post_status == 'trash' )
+            continue;
+        if ( $item = show_image_item( $id, array( 'errors' => isset($errors[$id]) ? $errors[$id] : null) ) )
+            $output .= "\n<div id='image-item-$id' class='image-item child-of-$attachment->post_parent preloaded'><div class='progress'><div class='bar'></div></div><div id='image-upload-error-$id'></div><div class='filename'></div>$item\n</div>";
+    }
+
+    return $output;
+}
+
+add_action('media_upload_image_list','media_upload_image_list');
+/* end */
 
 add_filter('media_upload_form_url', 'media_upload_bypass_url');
 
