@@ -34,8 +34,7 @@ $new_meta_boxes = array(
 );
 
 function new_meta_boxes() {
-  global $post, $new_meta_boxes, $up_options;
-  
+    global $post, $new_meta_boxes, $up_options;
     if($up_options->custom_metadata):
         foreach($up_options->custom_metadata as $metadata){
             $metaslug = "custom-".strtolower(preg_replace('/ /', '_', $metadata));
@@ -43,17 +42,20 @@ function new_meta_boxes() {
               "name" => $metaslug,
               "std" => "",
               "title" => $metadata,
-              "description" => "Custom metadata field from your theme options panel.");
+              "description" => "");
+            if (sizeof($new_meta_boxes)==sizeof($up_options->custom_metadata))
+                break;
             $new_meta_boxes[] = $metabox;
+            
         }
     endif;
-
     foreach($new_meta_boxes as $meta_box) {
         $meta_box_value = get_post_meta($post->ID, $meta_box['name'], true);
         if($meta_box_value == "") $meta_box_value = $meta_box['std'];
         echo'<input type="hidden" name="'.$meta_box['name'].'_noncename" id="'.$meta_box['name'].'_noncename" value="'.wp_create_nonce( plugin_basename(__FILE__) ).'" />';
         echo'<label style="font-weight: bold; display: block; padding: 5px 0 2px 2px" for="'.$meta_box['name'].'">'.$meta_box['title'].'</label>';
-        echo'<input type="text" name="'.$meta_box['name'].'" value="'.$meta_box_value.'" size="55" /><br />';
+        //echo'<input type="text" name="'.$meta_box['name'].'" value="'.$meta_box_value.'" size="55" /><br />';
+        echo '<textarea name="'.$meta_box['name'].'" cols="60" rows="3">'.$meta_box_value.'</textarea><br />';
         echo'<p><label for="'.$meta_box['name'].'">'.$meta_box['description'].'</label></p>';
     }
 }
@@ -61,7 +63,7 @@ function new_meta_boxes() {
 function create_meta_box() {
     global $theme_name;
     if ( function_exists('add_meta_box') ) {
-        add_meta_box( 'new-meta-boxes', 'Additional Information', 'new_meta_boxes', 'post', 'normal', 'high' );
+        add_meta_box( 'new-meta-boxes', 'Material Information', 'new_meta_boxes', 'post', 'normal', 'high' );
     }
 }
 
@@ -74,7 +76,7 @@ function save_postdata( $post_id ) {
                 "name" => $metaslug,
                 "std" => "",
                 "title" => $metadata,
-                "description" => "Custom metadata field from your theme options panel.");
+                "description" => "");
             $new_meta_boxes[] = $metabox;
         }
     endif;
