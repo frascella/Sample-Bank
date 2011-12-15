@@ -122,7 +122,7 @@ foreach ( get_object_taxonomies($post_type) as $tax_name ) {
 if ( post_type_supports($post_type, 'page-attributes') )
 	add_meta_box('pageparentdiv', 'page' == $post_type ? __('Page Attributes') : __('Attributes'), 'page_attributes_meta_box', $post_type, 'side', 'core');
 
-if ( current_theme_supports( 'post-thumbnails', $post_type ) && post_type_supports( $post_type, 'thumbnail' )
+/*if ( current_theme_supports( 'post-thumbnails', $post_type ) && post_type_supports( $post_type, 'thumbnail' )
 	&& ( ! is_multisite() || ( ( $mu_media_buttons = get_site_option( 'mu_media_buttons', array() ) ) && ! empty( $mu_media_buttons['image'] ) ) ) )
 		add_meta_box('postimagediv', __('Featured Image'), 'post_thumbnail_meta_box', $post_type, 'side', 'low');
 
@@ -132,6 +132,13 @@ if ( post_type_supports($post_type, 'excerpt') )
 if ( post_type_supports($post_type, 'trackbacks') )
 	add_meta_box('trackbacksdiv', __('Send Trackbacks'), 'post_trackback_meta_box', $post_type, 'normal', 'core');
 
+if ( !( 'pending' == $post->post_status && !current_user_can( $post_type_object->cap->publish_posts ) ) )
+    add_meta_box('slugdiv', __('Slug'), 'post_slug_meta_box', $post_type, 'normal', 'core');
+
+if ( post_type_supports($post_type, 'author') ) {
+    if ( is_super_admin() || current_user_can( $post_type_object->cap->edit_others_posts ) )
+        add_meta_box('authordiv', __('Author'), 'post_author_meta_box', $post_type, 'normal', 'core');
+}
 if ( post_type_supports($post_type, 'custom-fields') )
 	add_meta_box('postcustom', __('Custom Fields'), 'post_custom_meta_box', $post_type, 'normal', 'core');
 
@@ -142,16 +149,8 @@ if ( post_type_supports($post_type, 'comments') )
 if ( ('publish' == $post->post_status || 'private' == $post->post_status) && post_type_supports($post_type, 'comments') )
 	add_meta_box('commentsdiv', __('Comments'), 'post_comment_meta_box', $post_type, 'normal', 'core');
 
-if ( !( 'pending' == $post->post_status && !current_user_can( $post_type_object->cap->publish_posts ) ) )
-	add_meta_box('slugdiv', __('Slug'), 'post_slug_meta_box', $post_type, 'normal', 'core');
-
-if ( post_type_supports($post_type, 'author') ) {
-	if ( is_super_admin() || current_user_can( $post_type_object->cap->edit_others_posts ) )
-		add_meta_box('authordiv', __('Author'), 'post_author_meta_box', $post_type, 'normal', 'core');
-}
-
 if ( post_type_supports($post_type, 'revisions') && 0 < $post_ID && wp_get_post_revisions( $post_ID ) )
-	add_meta_box('revisionsdiv', __('Revisions'), 'post_revisions_meta_box', $post_type, 'normal', 'core');
+	add_meta_box('revisionsdiv', __('Revisions'), 'post_revisions_meta_box', $post_type, 'normal', 'core');*/
 
 do_action('add_meta_boxes', $post_type, $post);
 do_action('add_meta_boxes_' . $post_type, $post);

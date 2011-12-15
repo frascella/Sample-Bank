@@ -486,12 +486,12 @@ function up_seo_title_layout( $layout = "%ARCHIVE% %TITLE% %BLOG% %DESC%" ){
 function up_seo_meta_box() {
     global $up_options;
     
-    if(!$up_options->seo_hide_custom_fields):
+    /*if(!$up_options->seo_hide_custom_fields):
         if( function_exists( 'add_meta_box' ) ) {
             add_meta_box( 'new-post-meta-boxes', __('UpThemes SEO Options'), 'up_seo_post_meta_display', 'post', 'normal', 'core' );
             add_meta_box( 'new-post-meta-boxes', __('UpThemes SEO Options'), 'up_seo_post_meta_display', 'page', 'normal', 'core' );
         }
-    endif;
+    endif;*/
 }
 if(is_admin()) add_action( 'admin_menu', 'up_seo_meta_box' );
 
