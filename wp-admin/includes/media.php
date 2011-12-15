@@ -1251,7 +1251,8 @@ function get_media_item( $attachment_id, $args = null ) {
 			if ( $gallery )
 			{
 				$order = " <div class='menu_order'><input class='menu_order_input' type='hidden' value='" . esc_attr( $val['value'] ). "' id='attachments[$attachment_id][menu_order]' name='attachments[$attachment_id][menu_order]' />";
-				$order = $order. " <input class='checkbox' type='checkbox' value='" . esc_attr( $val['value'] ). "'/></div>";
+				$order = $order. " <input class='radio-before' name='$attachment_id' type='radio' id='before-$attachment_id' value='" . esc_attr( $val['value'] ). "'/><label for='before-$attachment_id'>Before</label>";
+				$order = $order. " <input class='radio-after' name='$attachment_id' type='radio' id='after-$attachment_id' value='" . esc_attr( $val['value'] ). "' checked='checked' /><label for='after-$attachment_id'>After</label></div>";
 			}
 			else
 				$order = "<input type='hidden' name='attachments[$attachment_id][menu_order]' value='" . esc_attr( $val['value'] ) . "' />";
@@ -1817,7 +1818,7 @@ jQuery(function($){
 <table class="widefat" cellspacing="0">
 <thead><tr>
 <th><?php _e('Media'); ?></th>
-<th class="order-head"><?php _e('Before/After'); ?></th>
+<th class="order-head"><?php _e(' '); ?></th>
 <th class="actions-head"><?php _e('Actions'); ?></th>
 </tr></thead>
 </table>
@@ -1825,8 +1826,6 @@ jQuery(function($){
 <?php add_filter('attachment_fields_to_edit', 'media_post_single_attachment_fields_to_edit', 10, 2); ?>
 <?php echo get_media_items($post_id, $errors); ?>
 </div>
-
-<p>Please, mark checkbox if it is After Image</p>
 <p class="ml-submit">
 <?php submit_button( __( 'Save all changes' ), 'button savebutton', 'save', false, array( 'id' => 'save-all', 'style' => 'display: none;' ) ); ?>
 <input type="hidden" name="post_id" id="post_id" value="<?php echo (int) $post_id; ?>" />
@@ -1836,14 +1835,21 @@ jQuery(function($){
 <script type='text/javascript'>
 var $j = jQuery.noConflict();
 $j(document).ready(function(){ 
-$j('input:checkbox').each(function(){
-$j(this).attr('checked',function(){return ($j(this).val()!='0')?true:false;});
-$j(this).prev('input').val(function(index, value){ return ($j(this).val() != '1')?'0':'1';});
+$j('input.menu_order_input').each(function(){
+	if ($j(this).val() == '1'){
+		$j(this).next('input:radio.radio-before').attr('checked',false);
+	} else{
+		$j(this).next('input:radio.radio-before').attr('checked',true);
+	}
 });
 });
-$j('input:checkbox').click(function() {
-	$j(this).val(function(index, value){ return ($j(this).val() != '0')?'0':'1';});
-	$j(this).prev('input').val(function(index, value){ return ($j(this).val() != '0')?'0':'1';});
+$j('input:radio.radio-before').click(function() {
+	$j(this).prev('input').val(function(index, value){ return '0';});	
+});
+
+$j('input:radio.radio-after').click(function() {
+	$prev = $j(this).prevAll('input:hidden:first');
+	$prev.val(function(index, value){ return '1';});	
 });
 
 </script>

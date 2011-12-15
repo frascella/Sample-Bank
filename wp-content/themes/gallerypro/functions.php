@@ -412,7 +412,28 @@ function gpro_strip_images_from_content(){
 }
 
 /*  Tue Dec 13, 2011 08:46:56 added by Thanh Son */
+add_action( 'admin_head_media_upload_gallery_form', 'mfields_remove_gallery_setting_div' );
+if( !function_exists( 'mfields_remove_gallery_setting_div' ) ) {
+    function mfields_remove_gallery_setting_div() {
+        print '
+            <style type="text/css">
+                #gallery-settings *{
+                	display:none;
+                }
+            </style>';
+    }
+}
+add_action('admin_init','remove_post_editor');
+function remove_post_editor(){
+        print '
+            <style type="text/css">
+                #edButtonHTML, #edButtonPreview, #post-status-info, #editorcontainer{
+                    display:none;
+                }
 
+            </style>';
+
+}
 add_filter('media_upload_tabs', 'remove_media_type_url_tab');
 function remove_media_type_url_tab($tabs) {
     unset($tabs['type_url']);
