@@ -121,6 +121,5 @@ if ( isset($_GET['inline']) ) {
 		do_action("media_upload_$type");
 	else
 		do_action("media_upload_$tab");
-	do_action("media_upload_image_list");
 }
 ?>

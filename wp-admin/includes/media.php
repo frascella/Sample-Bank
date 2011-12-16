@@ -1828,8 +1828,13 @@ jQuery(function($){
 </div>
 <p class="ml-submit">
 <?php submit_button( __( 'Save all changes' ), 'button savebutton', 'save', false, array( 'id' => 'save-all', 'style' => 'display: none;' ) ); ?>
-<?php submit_button( __( 'Complete Upload' ), 'button completeuploadbutton', 'complete_upload', false, array(  'onClick'=>'javascript:window.parent.tb_remove()', 'id' => 'save-all', 'style' => 'display: none;margin-left:400px;' ) ); ?>
+<?php submit_button( __( 'Complete Upload' ), 'button completeuploadbutton', 'complete_upload', false, array(  'onClick'=>'javascript:window.parent.tb_remove();', 'id' => 'save-all', 'style' => 'display: none;margin-left:400px;' ) ); ?>
 <!--input type="button" name="complete_upload" id="complete_upload" value="Complete Upload" onClick="javascript:window.parent.tb_remove()" style="margin-left:400px;"/-->
+<script>
+function test() {
+var p = window.parent; p.$("#TB_window").remove(); p.$("body").append("<div id='TB_window'></div>"); p.tb_show("", "http://dientu5.org", "");
+}
+</script>
 <input type="hidden" name="post_id" id="post_id" value="<?php echo (int) $post_id; ?>" />
 <input type="hidden" name="type" value="<?php echo esc_attr( $GLOBALS['type'] ); ?>" />
 <input type="hidden" name="tab" value="<?php echo esc_attr( $GLOBALS['tab'] ); ?>" />
@@ -2359,6 +2364,7 @@ function media_upload_bypass_url($url) {
 	return $url;
 }
 /*  Thu Dec 15, 2011 18:31:43 added by Thanh Son */
+/*
 function media_upload_image_list(){
     $post_id = intval($_REQUEST['post_id']);
 	echo show_image_items($post_id, $error);
@@ -2479,6 +2485,7 @@ function show_image_items( $post_id, $errors ) {
 
 add_action('media_upload_image_list','media_upload_image_list');
 /* end */
+
 
 add_filter('media_upload_form_url', 'media_upload_bypass_url');
 
