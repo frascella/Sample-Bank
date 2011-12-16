@@ -54,7 +54,7 @@ require_once(THEMELIB . '/extensions/helpers.php');
 require_once(THEMELIB . '/extensions/shortcodes.php');
 
 // Get The Image Plugin by Justin Tadlock
-require_once(THEMELIB . '/extensions/get-the-image.php');
+//require_once(THEMELIB . '/extensions/get-the-image.php');
 
 // Get 
 require_once(THEMELIB . '/extensions/image-list.php');
@@ -427,7 +427,7 @@ add_action('admin_init','remove_post_editor');
 function remove_post_editor(){
         print '
             <style type="text/css">
-                #edButtonHTML, #edButtonPreview, #post-status-info, #editorcontainer, #add_media, #add_audio{
+                #edButtonHTML, #edButtonPreview, #post-status-info, #editorcontainer, #add_media, #add_audio, #add_video{
                     display:none;
                 }
 
