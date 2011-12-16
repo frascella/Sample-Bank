@@ -54,10 +54,10 @@ require_once(THEMELIB . '/extensions/helpers.php');
 require_once(THEMELIB . '/extensions/shortcodes.php');
 
 // Get The Image Plugin by Justin Tadlock
-//require_once(THEMELIB . '/extensions/get-the-image.php');
+require_once(THEMELIB . '/extensions/get-the-image.php');
 
 // Get 
-require_once(THEMELIB . '/extensions/image-list.php');
+//require_once(THEMELIB . '/extensions/image-list.php');
 
 // Adds filters for the description/meta content in archives.php
 add_filter( 'archive_meta', 'wptexturize' );
