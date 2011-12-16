@@ -157,13 +157,27 @@ function view_image_boxes() {
     global $post;
     echo '<div>'.get_image_items($post->ID, $error).'</div>';
 }
+function ajax_image_box(){
+echo '
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+	jQuery.ajaxSetup({cache:false});
+	//$("h2 a").click(function(){
+		//var post_id = $(this).attr("rel")
+		jQuery("#TB_window").html("loading...");
+		jQuery("#TB_window").load("http://localhost/sb/wp-admin/media-upload.php?post_id='.$post->ID.'&type=image&TB_iframe=1&width=640&height=314","");
+		//return false;
+	//});
+});
+</script>';
+}
 
 function image_box() {
 //    global $theme_name;
     if ( function_exists('add_meta_box') ) {
-        add_meta_box( 'image-boxes', 'Image List', 'view_image_boxes', 'post', 'normal', 'high' );
+        add_meta_box( 'TB_window', 'Image List', 'ajax_image_box', 'post', 'normal', 'high' );
     }
 }
 
-add_action('admin_menu', 'image_box');
+//add_action('admin_menu', 'image_box');
 

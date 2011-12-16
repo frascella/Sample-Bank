@@ -1286,7 +1286,7 @@ function get_media_item( $attachment_id, $args = null ) {
 		<tr valign='top'>
 			<td class='A1B1' id='thumbnail-head-$post->ID'>
 			<p><a href='$attachment_url' target='_blank'><img class='thumbnail' src='$thumb_url' alt='' style='margin-top: 3px' /></a></p>
-			<p>$image_edit_button</p>
+			<!--p>$image_edit_button</p-->
 			</td>
 			<td>
 			<p><strong>" . __('File name:') . "</strong> $filename</p>
@@ -1807,10 +1807,11 @@ jQuery(function($){
 <a href="#" id="showall"><?php _e('Show'); ?></a>
 <a href="#" id="hideall" style="display:none;"><?php _e('Hide'); ?></a>
 </span>
-<?php _e('Sort Order:'); ?>
+<!--<?php _e('Sort Order:'); ?>
 <a href="#" id="asc"><?php _e('Ascending'); ?></a> |
 <a href="#" id="desc"><?php _e('Descending'); ?></a> |
 <a href="#" id="clear"><?php _ex('Clear', 'verb'); ?></a>
+-->
 </div>
 <form enctype="multipart/form-data" method="post" action="<?php echo esc_attr($form_action_url); ?>" class="media-upload-form validate" id="gallery-form">
 <?php wp_nonce_field('media-form'); ?>
