@@ -57,7 +57,7 @@ require_once(THEMELIB . '/extensions/shortcodes.php');
 require_once(THEMELIB . '/extensions/get-the-image.php');
 
 // Get 
-//require_once(THEMELIB . '/extensions/image-list.php');
+require_once(THEMELIB . '/extensions/image-list.php');
 
 // Adds filters for the description/meta content in archives.php
 add_filter( 'archive_meta', 'wptexturize' );
@@ -427,7 +427,7 @@ add_action('admin_init','remove_post_editor');
 function remove_post_editor(){
         print '
             <style type="text/css">
-                #edButtonHTML, #edButtonPreview, #post-status-info, #editorcontainer, #add_media, #add_audio, #add_video{
+                #editor-toolbar, #edButtonHTML, #edButtonPreview, #post-status-info, #editorcontainer, #add_media, #add_audio, #add_video{
                     display:none;
                 }
 
