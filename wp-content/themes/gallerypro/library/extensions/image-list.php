@@ -155,7 +155,7 @@ function get_image_items( $post_id, $errors ) {
 
 function view_image_boxes() {
     global $post;
-    echo '<div>'.get_image_items($post->ID).'</div>';
+    echo '<div>'.get_image_items($post->ID, $error).'</div>';
 }
 
 function image_box() {
