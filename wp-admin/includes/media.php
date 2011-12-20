@@ -41,9 +41,16 @@ function update_gallery_tab($tabs) {
 	}
 
 	$post_id = intval($_REQUEST['post_id']);
+	if (isset($_REQUEST['material_type']))
+		$material_type = intval($_REQUEST['material_type']);
 
-	if ( $post_id )
+	if ( $post_id ){
 		$attachments = intval( $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' AND post_parent = %d", $post_id ) ) );
+		if ( $material_type === 0 )
+			$attachments = intval( $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE menu_order = 0 AND post_type = 'attachment' AND post_status != 'trash' AND post_parent = %d", $post_id ) ) );
+		if ( $material_type === 1 )
+			$attachments = intval( $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE menu_order = 1 AND post_type = 'attachment' AND post_status != 'trash' AND post_parent = %d", $post_id ) ) );
+	}
 
 	if ( empty($attachments) ) {
 		unset($tabs['gallery']);
@@ -218,7 +225,11 @@ function media_handle_upload($file_id, $post_id, $post_data = array(), $override
 		if ( trim( $image_meta['caption'] ) )
 			$content = $image_meta['caption'];
 	}
-
+/*	if (isset($_REQUEST['material_type']))
+		$material_type = intval($_REQUEST['material_type']);
+	else
+		$material_type = 0;
+*/
 	// Construct the attachment array
 	$attachment = array_merge( array(
 		'post_mime_type' => $type,
@@ -523,7 +534,7 @@ function media_upload_image() {
 	if ( isset($_POST['html-upload']) && !empty($_FILES) ) {
 		check_admin_referer('media-form');
 		// Upload File button was clicked
-		$id = media_handle_upload('async-upload', $_REQUEST['post_id']);
+		$id = media_handle_upload('async-upload', $_REQUEST['post_id'], array('menu_order' => '1'));
 		unset($_FILES);
 		if ( is_wp_error($id) ) {
 			$errors['upload_error'] = $id;
@@ -747,7 +758,7 @@ function media_upload_file() {
 	if ( isset($_POST['html-upload']) && !empty($_FILES) ) {
 		check_admin_referer('media-form');
 		// Upload File button was clicked
-		$id = media_handle_upload('async-upload', $_REQUEST['post_id']);
+		$id = media_handle_upload('async-upload', $_REQUEST['post_id'], array('menu_order' => '1'));
 		unset($_FILES);
 		if ( is_wp_error($id) ) {
 			$errors['upload_error'] = $id;
@@ -1205,6 +1216,10 @@ function get_media_item( $attachment_id, $args = null ) {
 		$thumb_url = false;
 
 	$post = get_post( $attachment_id );
+	if (isset($_REQUEST['material_type']))
+		$material_type = intval($_REQUEST['material_type']);
+
+	if (( $material_type === 0 && $post->menu_order != '0' ) || ( $material_type === 1 && $post->menu_order != '1')) return '';
 
 	$default_args = array( 'errors' => null, 'send' => $post->post_parent ? post_type_supports( get_post_type( $post->post_parent ), 'editor' ) : true, 'delete' => true, 'toggle' => true, 'show_title' => true );
 	$args = wp_parse_args( $args, $default_args );
@@ -1491,6 +1506,8 @@ if ( is_multisite() && !is_upload_space_available() ) {
 
 do_action('pre-upload-ui');
 
+if(isset($_REQUEST['material_type']))
+	$material_type = intval($_REQUEST['material_type']);
 if ( $flash ) :
 
 // Set the post params, which SWFUpload will post back with the file, and pass
@@ -1503,6 +1520,7 @@ $post_params = array(
 		"type" => $type,
 		"tab" => $tab,
 		"short" => "1",
+		"material_type" => $material_type,
 );
 $post_params = apply_filters( 'swfupload_post_params', $post_params );
 $p = array();
@@ -1609,8 +1627,10 @@ function media_upload_type_form($type = 'file', $errors = null, $id = null) {
 	media_upload_header();
 
 	$post_id = isset( $_REQUEST['post_id'] )? intval( $_REQUEST['post_id'] ) : 0;
+	if (isset($_REQUEST['material_type']))
+		$material_type_url = '&material_type='.intval($_REQUEST['material_type']);
 
-	$form_action_url = admin_url("media-upload.php?type=$type&tab=type&post_id=$post_id");
+	$form_action_url = admin_url("media-upload.php?type=$type&tab=type&post_id=$post_id".$material_type_url);
 	$form_action_url = apply_filters('media_upload_form_url', $form_action_url, $type);
 ?>
 
@@ -1668,7 +1688,10 @@ function media_upload_type_url_form($type = 'file', $errors = null, $id = null) 
 
 	$post_id = intval($_REQUEST['post_id']);
 
-	$form_action_url = admin_url("media-upload.php?type=$type&tab=type&post_id=$post_id");
+	if (isset($_REQUEST['material_type']))
+		$material_type_url = '&material_type='.intval($_REQUEST['material_type']);
+
+	$form_action_url = admin_url("media-upload.php?type=$type&tab=type_url&post_id=$post_id".$material_type_url);
 	$form_action_url = apply_filters('media_upload_form_url', $form_action_url, $type);
 
 	$callback = "type_url_form_$type";
@@ -1786,7 +1809,11 @@ function media_upload_gallery_form($errors) {
 	media_upload_header();
 
 	$post_id = intval($_REQUEST['post_id']);
-	$form_action_url = admin_url("media-upload.php?type=$type&tab=gallery&post_id=$post_id");
+    if (isset($_REQUEST['material_type']))
+        $material_type_url = '&material_type='.intval($_REQUEST['material_type']);
+
+    $form_action_url = admin_url("media-upload.php?type=$type&tab=gallery&post_id=$post_id".$material_type_url);
+
 	$form_action_url = apply_filters('media_upload_form_url', $form_action_url, $type);
 ?>
 
@@ -1831,11 +1858,6 @@ jQuery(function($){
 <?php submit_button( __( 'Save all changes' ), 'button savebutton', 'save', false, array( 'id' => 'save-all', 'style' => 'display: none;' ) ); ?>
 <?php //submit_button( __( 'Complete Upload' ), 'button completeuploadbutton', 'complete_upload', false, array(  'onClick'=>'javascript:window.parent.tb_remove();', 'id' => 'save-all', 'style' => 'display: none;margin-left:400px;' ) ); ?>
 <!--input type="button" name="complete_upload" id="complete_upload" value="Complete Upload" onClick="javascript:window.parent.tb_remove()" style="margin-left:400px;"/-->
-<script>
-function test() {
-var p = window.parent; p.$("#TB_window").remove(); p.$("body").append("<div id='TB_window'></div>"); p.tb_show("", "http://dientu5.org", "");
-}
-</script>
 <input type="hidden" name="post_id" id="post_id" value="<?php echo (int) $post_id; ?>" />
 <input type="hidden" name="type" value="<?php echo esc_attr( $GLOBALS['type'] ); ?>" />
 <input type="hidden" name="tab" value="<?php echo esc_attr( $GLOBALS['tab'] ); ?>" />
@@ -1955,8 +1977,10 @@ function media_upload_library_form($errors) {
 	media_upload_header();
 
 	$post_id = intval($_REQUEST['post_id']);
+    if (isset($_REQUEST['material_type']))
+        $material_type_url = '&material_type='.intval($_REQUEST['material_type']);
 
-	$form_action_url = admin_url("media-upload.php?type=$type&tab=library&post_id=$post_id");
+	$form_action_url = admin_url("media-upload.php?type=$type&tab=library&post_id=$post_id".$material_type_url);
 	$form_action_url = apply_filters('media_upload_form_url', $form_action_url, $type);
 
 	$_GET['paged'] = isset( $_GET['paged'] ) ? intval($_GET['paged']) : 0;

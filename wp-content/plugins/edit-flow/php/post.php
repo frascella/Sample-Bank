@@ -14,7 +14,7 @@ class EF_Post_Metadata
 		add_action( 'init', array( &$this, 'init' ) );
 		
 		// Set up metabox and related actions
-		add_action('admin_menu', array(&$this, 'add_post_meta_box'));
+		//add_action('admin_menu', array(&$this, 'add_post_meta_box'));
 		
 		// Load necessary scripts and stylesheets
 		add_action('admin_enqueue_scripts', array(&$this, 'add_admin_scripts'));

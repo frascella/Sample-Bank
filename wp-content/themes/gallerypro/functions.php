@@ -2,10 +2,10 @@
 // Getting Theme and Child Theme Data
 // Credits: Joern Kretzschmar
 
-$themeData = get_theme_data(TEMPLATEPATH . '/style.css');
+/*$themeData = get_theme_data(TEMPLATEPATH . '/style.css');
 $version = trim($themeData['Version']);
 if(!$version) $version = "unknown";
-
+*/
 // set theme constants
 define('THEMENAME', $themeData['Title']);
 define('THEMEAUTHOR', $themeData['Author']);
@@ -20,7 +20,7 @@ define('THEMELIB', TEMPLATEPATH . '/library');
 
 //Load PageNavi
 if(!function_exists('wp_pagenavi')){
-    include(TEMPLATEPATH. '/wp-pagenavi/wp-pagenavi.php');
+    //include(TEMPLATEPATH. '/wp-pagenavi/wp-pagenavi.php');
 }
 
 // Load widgets
@@ -412,6 +412,13 @@ function gpro_strip_images_from_content(){
 }
 
 /*  Tue Dec 13, 2011 08:46:56 added by Thanh Son */
+// Custom Taxonomy Code  
+add_action( 'init', 'build_taxonomies', 0 );
+
+function build_taxonomies() {
+    register_taxonomy( 'country', 'post', array( 'hierarchical' => true, 'label' => 'Countries', 'query_var' => true, 'rewrite' => true ) );
+}
+
 add_action( 'admin_head_media_upload_gallery_form', 'mfields_remove_gallery_setting_div' );
 if( !function_exists( 'mfields_remove_gallery_setting_div' ) ) {
     function mfields_remove_gallery_setting_div() {

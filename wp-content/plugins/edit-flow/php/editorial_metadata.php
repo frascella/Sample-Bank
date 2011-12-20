@@ -52,7 +52,7 @@ class EF_Editorial_Metadata {
 		$this->metadata_postmeta_key = "_{$this->metadata_taxonomy}";
 		$this->metadata_string = __( 'Metadata Type', 'edit-flow' );
 		
-		add_action( 'init', array( &$this, 'init' ) );
+		/*add_action( 'init', array( &$this, 'init' ) );
 		add_action( 'init', array( &$this, 'register_taxonomy' ) );
 		add_action( 'admin_init', array( &$this, 'metadata_taxonomy_display_hooks' ) );
 		add_action( 'add_meta_boxes', array( &$this, 'handle_post_metaboxes' ) );
@@ -60,6 +60,7 @@ class EF_Editorial_Metadata {
 		
 		// Load necessary scripts and stylesheets
 		add_action( 'admin_enqueue_scripts', array( &$this, 'add_admin_scripts' ) );
+*/
 		
 	} // END: __construct()
 	
