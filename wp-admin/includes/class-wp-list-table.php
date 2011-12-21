@@ -286,7 +286,7 @@ class WP_List_Table {
 		if ( empty( $this->_actions ) )
 			return;
 
-		echo "<select name='action$two'>\n";
+		echo "<div id='es-bulk-actions'><select name='action$two'>\n";
 		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions' ) . "</option>\n";
 
 		foreach ( $this->_actions as $name => $title ) {
@@ -298,7 +298,7 @@ class WP_List_Table {
 		echo "</select>\n";
 
 		submit_button( __( 'Apply' ), 'button-secondary action', false, false, array( 'id' => "doaction$two" ) );
-		echo "\n";
+		echo "</div>\n";
 	}
 
 	/**

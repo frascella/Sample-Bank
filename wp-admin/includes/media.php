@@ -1265,9 +1265,9 @@ function get_media_item( $attachment_id, $args = null ) {
 		if ( 'menu_order' == $key ) {
 			if ( $gallery )
 			{
-				$order = " <div class='menu_order'><input class='menu_order_input' type='hidden' value='" . esc_attr( $val['value'] ). "' id='attachments[$attachment_id][menu_order]' name='attachments[$attachment_id][menu_order]' />";
-				$order = $order. " <input class='radio-before' name='$attachment_id' type='radio' id='before-$attachment_id' value='" . esc_attr( $val['value'] ). "'/><label for='before-$attachment_id'>Before</label>";
-				$order = $order. " <input class='radio-after' name='$attachment_id' type='radio' id='after-$attachment_id' value='" . esc_attr( $val['value'] ). "' checked='checked' /><label for='after-$attachment_id'>After</label></div>";
+				//$order = " <div class='menu_order'><input class='menu_order_input' type='hidden' value='" . esc_attr( $val['value'] ). "' id='attachments[$attachment_id][menu_order]' name='attachments[$attachment_id][menu_order]' />";
+				//$order = $order. " <input class='radio-before' name='$attachment_id' type='radio' id='before-$attachment_id' value='" . esc_attr( $val['value'] ). "'/><label for='before-$attachment_id'>Before</label>";
+				//$order = $order. " <input class='radio-after' name='$attachment_id' type='radio' id='after-$attachment_id' value='" . esc_attr( $val['value'] ). "' checked='checked' /><label for='after-$attachment_id'>After</label></div>";
 			}
 			else
 				$order = "<input type='hidden' name='attachments[$attachment_id][menu_order]' value='" . esc_attr( $val['value'] ) . "' />";
@@ -1862,7 +1862,7 @@ jQuery(function($){
 <input type="hidden" name="type" value="<?php echo esc_attr( $GLOBALS['type'] ); ?>" />
 <input type="hidden" name="tab" value="<?php echo esc_attr( $GLOBALS['tab'] ); ?>" />
 </p>
-<script type='text/javascript'>
+<!--script type='text/javascript'>
 var $j = jQuery.noConflict();
 $j(document).ready(function(){ 
 $j('input.menu_order_input').each(function(){
@@ -1882,7 +1882,8 @@ $j('input:radio.radio-after').click(function() {
 	$prev.val(function(index, value){ return '1';});	
 });
 
-</script>
+
+</script-->
 
 <div id="gallery-settings" style="display:none;">
 <div class="title"><?php _e('Gallery Settings'); ?></div>

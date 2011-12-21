@@ -25,7 +25,7 @@ function post_submit_meta_box($post) {
 <?php submit_button( __( 'Save' ), 'button', 'save' ); ?>
 </div>
 
-<div id="minor-publishing-actions">
+<!--div id="minor-publishing-actions">
 <div id="save-action">
 <?php if ( 'publish' != $post->post_status && 'future' != $post->post_status && 'pending' != $post->post_status )  { ?>
 <input <?php if ( 'private' == $post->post_status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e('Save Draft'); ?>" tabindex="4" class="button button-highlighted" />
@@ -53,7 +53,7 @@ if ( 'publish' == $post->post_status ) {
 </div>
 
 <div class="clear"></div>
-</div><?php // /minor-publishing-actions ?>
+</div--><?php // /minor-publishing-actions ?>
 
 <div id="misc-publishing-actions">
 
@@ -176,12 +176,12 @@ if ( 0 != $post->ID ) {
 }
 
 if ( $can_publish ) : // Contributors don't get to choose the date of publish ?>
-<div class="misc-pub-section curtime misc-pub-section-last">
+<!--div class="misc-pub-section curtime misc-pub-section-last">
 	<span id="timestamp">
 	<?php printf($stamp, $date); ?></span>
 	<a href="#edit_timestamp" class="edit-timestamp hide-if-no-js" tabindex='4'><?php _e('Edit') ?></a>
 	<div id="timestampdiv" class="hide-if-js"><?php touch_time(($action == 'edit'),1,4); ?></div>
-</div><?php // /misc-pub-section ?>
+</div--><?php // /misc-pub-section ?>
 <?php endif; ?>
 
 <?php do_action('post_submitbox_misc_actions'); ?>
@@ -189,6 +189,9 @@ if ( $can_publish ) : // Contributors don't get to choose the date of publish ?>
 <div class="clear"></div>
 </div>
 
+<!--div id="minor-publishing-actions">
+
+</div-->
 <div id="major-publishing-actions">
 <?php do_action('post_submitbox_start'); ?>
 <div id="delete-action">
@@ -197,13 +200,18 @@ if ( current_user_can( "delete_post", $post->ID ) ) {
 	if ( !EMPTY_TRASH_DAYS )
 		$delete_text = __('Delete Permanently');
 	else
-		$delete_text = __('Move to Trash');
+		$delete_text = __('Delete');
 	?>
 <a class="submitdelete deletion" href="<?php echo get_delete_post_link($post->ID); ?>"><?php echo $delete_text; ?></a><?php
 } ?>
 </div>
-
 <div id="publishing-action">
+<?php if ( 'publish' != $post->post_status && 'future' != $post->post_status && 'pending' != $post->post_status )  { ?>
+<input <?php if ( 'private' == $post->post_status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e('Save Draft'); ?>" tabindex="4" class="button button-highlighted" />
+<?php } elseif ( 'pending' == $post->post_status && $can_publish ) { ?>
+<input type="submit" name="save" id="save-post" value="<?php esc_attr_e('Save as Pending'); ?>" tabindex="4" class="button button-highlighted" />
+<?php } ?>
+<img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="draft-ajax-loading" alt="" />
 <img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="ajax-loading" alt="" />
 <?php
 if ( !in_array( $post->post_status, array('publish', 'future', 'private') ) || 0 == $post->ID ) {
@@ -216,8 +224,8 @@ if ( !in_array( $post->post_status, array('publish', 'future', 'private') ) || 0
 		<?php submit_button( __( 'Publish' ), 'primary', 'publish', false, array( 'tabindex' => '5', 'accesskey' => 'p' ) ); ?>
 <?php	endif;
 	else : ?>
-		<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Submit for Review') ?>" />
-		<?php submit_button( __( 'Submit for Review' ), 'primary', 'publish', false, array( 'tabindex' => '5', 'accesskey' => 'p' ) ); ?>
+		<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Submit') ?>" />
+		<?php submit_button( __( 'Submit' ), 'primary', 'publish', false, array( 'tabindex' => '5', 'accesskey' => 'p' ) ); ?>
 <?php
 	endif;
 } else { ?>

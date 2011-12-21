@@ -434,10 +434,12 @@ add_action('admin_init','remove_post_editor');
 function remove_post_editor(){
         print '
             <style type="text/css">
-                #editor-toolbar, #edButtonHTML, #edButtonPreview, #post-status-info, #editorcontainer, #add_media, #add_audio, #add_video{
+                #preview-action, #editor-toolbar, #edButtonHTML, #edButtonPreview, #post-status-info, #editorcontainer, #add_media, #add_audio, #add_video{
                     display:none;
                 }
-
+				#draft-ajax-loading, #ajax-loading{
+					display:none;	
+				}
             </style>';
 
 }
@@ -486,6 +488,8 @@ function es_remove_menu_entries () {
         remove_menu_page( 'link-manager.php' );
         remove_menu_page( 'edit-comments.php' );
         remove_submenu_page( 'upload.php', 'media-new.php' );
+		remove_element ( '#es-bulk-actions' );
+		//remove_element ( '.author.column-author, .manage-column.column-author, .manage-column.column-comments, .comments.column-comments' );
     } else {
     // unset comments
         unset( $GLOBALS['menu'][10] );
@@ -493,6 +497,14 @@ function es_remove_menu_entries () {
         unset( $GLOBALS['submenu']['upload.php'][10] );
     }
     }
+}
+function remove_element($s){
+	print '
+		<style type="text/css">
+			'.$s.'{
+				display:none;
+			}
+		</style>';
 }
 function es_meta_boxes() {
     global $post, $new_meta_boxes, $up_options;

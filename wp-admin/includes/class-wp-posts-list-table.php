@@ -35,6 +35,7 @@ class WP_Posts_List_Table extends WP_List_Table {
 	 * @access private
 	 */
 	var $user_posts_count;
+	var $contributor_posts_count;
 
 	/**
 	 * Holds the number of posts which are sticky.
@@ -153,7 +154,12 @@ class WP_Posts_List_Table extends WP_List_Table {
 			$total_posts -= $num_posts->$state;
 
 		$class = empty( $class ) && empty( $_REQUEST['post_status'] ) && empty( $_REQUEST['show_sticky'] ) ? ' class="current"' : '';
-		$status_links['all'] = "<a href='edit.php?post_type=$post_type{$allposts}'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_posts, 'posts' ), number_format_i18n( $total_posts ) ) . '</a>';
+		$filter_author = '';
+		if ( (get_user_role() != 'contributor') ){
+			$status_links['all'] = "<a href='edit.php?post_type=$post_type{$allposts}'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_posts, 'posts' ), number_format_i18n( $total_posts ) ) . '</a>';
+		} else {
+			$filter_author = '&author='.$current_user_id;	
+		}
 
 		foreach ( get_post_stati(array('show_in_admin_status_list' => true), 'objects') as $status ) {
 			$class = '';
@@ -168,8 +174,17 @@ class WP_Posts_List_Table extends WP_List_Table {
 
 			if ( isset($_REQUEST['post_status']) && $status_name == $_REQUEST['post_status'] )
 				$class = ' class="current"';
+			/*if ( (get_user_role() == 'contributor') ){
+				$this->contributor_posts_count = $wpdb->get_var( $wpdb->prepare( "
+					SELECT COUNT( 1 ) FROM $wpdb->posts
+					WHERE post_type = %s 
+					AND post_author = %d
+				", $post_type, get_current_user_id() ) );
+			} else {*/
+				$this->contributors_post_count = $num_posts->$status_name;
+			//}
 
-			$status_links[$status_name] = "<a href='edit.php?post_status=$status_name&amp;post_type=$post_type'$class>" . sprintf( translate_nooped_plural( $status->label_count, $num_posts->$status_name ), number_format_i18n( $num_posts->$status_name ) ) . '</a>';
+			$status_links[$status_name] = "<a href='edit.php?post_status=$status_name$filter_author&amp;post_type=$post_type'$class>" . sprintf( translate_nooped_plural( $status->label_count, $this->contributors_post_count ), number_format_i18n( $this->contributors_post_count ) ) . '</a>';
 		}
 
 		if ( ! empty( $this->sticky_posts_count ) ) {
@@ -270,7 +285,7 @@ class WP_Posts_List_Table extends WP_List_Table {
 		/* translators: manage posts column name */
 		$posts_columns['title'] = _x( 'Title', 'column name' );
 
-		if ( post_type_supports( $post_type, 'author' ) )
+		if ( (get_user_role() != 'contributor') && post_type_supports( $post_type, 'author' ) )
 			$posts_columns['author'] = __( 'Author' );
 
 		if ( empty( $post_type ) || is_object_in_taxonomy( $post_type, 'category' ) )
@@ -280,8 +295,8 @@ class WP_Posts_List_Table extends WP_List_Table {
 			$posts_columns['tags'] = __( 'Tags' );
 
 		$post_status = !empty( $_REQUEST['post_status'] ) ? $_REQUEST['post_status'] : 'all';
-		if ( post_type_supports( $post_type, 'comments' ) && !in_array( $post_status, array( 'pending', 'draft', 'future' ) ) )
-			$posts_columns['comments'] = '<span class="vers"><img alt="' . esc_attr__( 'Comments' ) . '" src="' . esc_url( admin_url( 'images/comment-grey-bubble.png' ) ) . '" /></span>';
+		//if ( post_type_supports( $post_type, 'comments' ) && !in_array( $post_status, array( 'pending', 'draft', 'future' ) ) )
+		//	$posts_columns['comments'] = '<span class="vers"><img alt="' . esc_attr__( 'Comments' ) . '" src="' . esc_url( admin_url( 'images/comment-grey-bubble.png' ) ) . '" /></span>';
 
 		$posts_columns['date'] = __( 'Date' );
 
