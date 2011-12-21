@@ -1154,14 +1154,16 @@ function _fill_many_users( &$users ) {
  */
 function sanitize_user_object($user, $context = 'display') {
 	if ( is_object($user) ) {
-		if ( !isset($user->ID) )
+        if ( !isset($user->ID) )
 			$user->ID = 0;
 		if ( isset($user->data) )
 			$vars = get_object_vars( $user->data );
 		else
-			$vars = get_object_vars($user);
-		foreach ( array_keys($vars) as $field ) {
-			if ( is_string($user->$field) || is_numeric($user->$field) )
+            //$vars = get_object_vars($user);
+			$vars = get_object_vars($user->data);
+        
+        foreach ( array_keys($vars) as $field ) {
+            if ( is_string($user->$field) || is_numeric($user->$field) )
 				$user->$field = sanitize_user_field($field, $user->$field, $user->ID, $context);
 		}
 		$user->filter = $context;
@@ -1172,7 +1174,7 @@ function sanitize_user_object($user, $context = 'display') {
 			$user[$field] = sanitize_user_field($field, $user[$field], $user['ID'], $context);
 		$user['filter'] = $context;
 	}
-
+    
 	return $user;
 }
 
@@ -1204,7 +1206,7 @@ function sanitize_user_object($user, $context = 'display') {
  * @return mixed Sanitized value.
  */
 function sanitize_user_field($field, $value, $user_id, $context) {
-	$int_fields = array('ID');
+    $int_fields = array('ID');
 	if ( in_array($field, $int_fields) )
 		$value = (int) $value;
 
@@ -1239,16 +1241,12 @@ function sanitize_user_field($field, $value, $user_id, $context) {
 		}
 	} else {
 		// Use display filters by default.
-		if ( $prefixed )
-			$value = apply_filters($field, $value, $user_id, $context);
-		else
-			$value = apply_filters("user_{$field}", $value, $user_id, $context);
+        $value = apply_filters("user_{$field}", $value, $user_id, $context);
 	}
 
-	if ( 'user_url' == $field )
-		$value = esc_url($value);
-
-	if ( 'attribute' == $context )
+    /*if ( 'user_url' == $field )
+		$value = esc_url($value);*/
+    if ( 'attribute' == $context )
 		$value = esc_attr($value);
 	else if ( 'js' == $context )
 		$value = esc_js($value);
@@ -1384,7 +1382,7 @@ function wp_insert_user($userdata) {
 	global $wpdb;
 
 	extract($userdata, EXTR_SKIP);
-
+    
 	// Are we updating or creating?
 	if ( !empty($ID) ) {
 		$ID = (int) $ID;
@@ -1414,7 +1412,7 @@ function wp_insert_user($userdata) {
 
 	if ( empty($user_url) )
 		$user_url = '';
-	$user_url = apply_filters('pre_user_url', $user_url);
+	//$user_url = apply_filters('pre_user_url', $user_url);
 
 	if ( empty($user_email) )
 		$user_email = '';
@@ -1477,10 +1475,10 @@ function wp_insert_user($userdata) {
 		$user_nicename = $alt_user_nicename;
 	}
 
-	$data = compact( 'user_pass', 'user_email', 'user_url', 'user_nicename', 'display_name', 'user_registered' );
+    
+	$data = compact( 'user_pass', 'user_login', 'user_email', 'user_url', 'user_nicename', 'display_name', 'user_registered' );
 	$data = stripslashes_deep( $data );
-
-	if ( $update ) {
+    if ( $update ) {
 		$wpdb->update( $wpdb->users, $data, compact( 'ID' ) );
 		$user_id = (int) $ID;
 	} else {
@@ -1544,7 +1542,7 @@ function wp_insert_user($userdata) {
  * @return int The updated user's ID.
  */
 function wp_update_user($userdata) {
-	$ID = (int) $userdata['ID'];
+    $ID = (int) $userdata['ID'];
 
 	// First, get all of the original fields
 	$user = get_userdata($ID);
@@ -1572,8 +1570,7 @@ function wp_update_user($userdata) {
 			wp_set_auth_cookie($ID);
 		}
 	}
-
-	return $user_id;
+    return $user_id;
 }
 
 /**

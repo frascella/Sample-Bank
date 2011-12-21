@@ -87,8 +87,7 @@ if ( isset($_REQUEST['action']) && 'adduser' == $_REQUEST['action'] ) {
 
 	if ( !is_multisite() ) {
 		$user_id = add_user();
-
-		if ( is_wp_error( $user_id ) ) {
+        if ( is_wp_error( $user_id ) ) {
 			$add_user_errors = $user_id;
 		} else {
 			if ( current_user_can('edit_users') ) {
@@ -283,10 +282,10 @@ foreach ( array( 'user_login' => 'login', 'first_name' => 'firstname', 'last_nam
 
 ?>
 <table class="form-table">
-	<tr class="form-field form-required">
+	<!--<tr class="form-field">
 		<th scope="row"><label for="user_login"><?php _e('Username'); ?> <span class="description"><?php _e('(required)'); ?></span></label></th>
 		<td><input name="user_login" type="text" id="user_login" value="<?php echo esc_attr($new_user_login); ?>" aria-required="true" /></td>
-	</tr>
+	</tr-->
 	<tr class="form-field form-required">
 		<th scope="row"><label for="email"><?php _e('E-mail'); ?> <span class="description"><?php _e('(required)'); ?></span></label></th>
 		<td><input name="email" type="text" id="email" value="<?php echo esc_attr($new_user_email); ?>" /></td>
@@ -301,7 +300,7 @@ foreach ( array( 'user_login' => 'login', 'first_name' => 'firstname', 'last_nam
 		<td><input name="last_name" type="text" id="last_name" value="<?php echo esc_attr($new_user_lastname); ?>" /></td>
 	</tr>
 	<tr class="form-field">
-		<th scope="row"><label for="url"><?php _e('Website') ?></label></th>
+		<th scope="row"><label for="url"><?php _e('Company') ?></label></th>
 		<td><input name="url" type="text" id="url" class="code" value="<?php echo esc_attr($new_user_uri); ?>" /></td>
 	</tr>
 <?php if ( apply_filters('show_password_fields', true) ) : ?>
