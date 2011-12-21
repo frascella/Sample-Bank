@@ -1,0 +1,102 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: User Locker v1.1.9\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/user-locker\n"
+"POT-Creation-Date: 2010-01-05 23:07+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Rene - WordPressPluginGuide.com <info@wppg.me>\n"
+"Language-Team: WordPress Plugin Guide <info@wppg.me>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: user-locker.php:94
+msgid "<strong>ERROR</strong>: This user account is disabled."
+msgstr "<strong>FOUT</strong>: Deze gebruikersaccount is uitgeschakeld."
+
+#: user-locker.php:99
+msgid "<strong>ERROR</strong>: This user account is locked for security reasons. Please use Lost Password option to unlock it."
+msgstr "<strong>FOUT</strong>: Deze gebruikersaccount is geblokkeerd om veiligheidsredenen. Gebruik de optie Wachtwoord Vergeten om het te deblokkeren."
+
+#: user-locker.php:162
+msgid "<strong>ERROR</strong>: This user account has been locked for security reasons. Please use Lost Password option to unlock it."
+msgstr "<strong>FOUT</strong>: Deze gebruikersaccount was geblokkeerd om veiligheidsredenen. Gebruik de optie Wachtwoord Vergeten om het te deblokkeren."
+
+#: user-locker.php:181
+msgid "User Locking"
+msgstr "Blokkeren Gebruiker"
+
+#: user-locker.php:184
+msgid "User account locked"
+msgstr "Gebruikersaccount is geblokkeerd"
+
+#: user-locker.php:185
+msgid "User account is locked for security reasons"
+msgstr "Gebruikersaccount is geblokkeerd om veiligheidsredenen"
+
+#: user-locker.php:188
+msgid "User account disabled"
+msgstr "Gebruikersaccount uitgeschakeld"
+
+#: user-locker.php:189
+msgid "User account is disabled"
+msgstr "Gebruikersaccount is uitgeschakeld"
+
+#: user-locker.php:228
+msgid "Locked / Disabled"
+msgstr "Geblokkeerd / Uitgeschakeld"
+
+#: user-locker.php:237
+#: user-locker.php:243
+msgid "Yes"
+msgstr "Ja"
+
+#: user-locker.php:239
+#: user-locker.php:245
+msgid "No"
+msgstr "Nee"
+
+#: user-locker.php:264
+msgid "Configuration has been saved."
+msgstr "Instellingen zijn opgeslagen."
+
+#: user-locker.php:269
+msgid "User Locker - Options"
+msgstr "User Locker - Opties"
+
+#: user-locker.php:275
+msgid "Account locking:"
+msgstr "Account blokkering:"
+
+#: user-locker.php:279
+msgid "Maximum invalid login attempts before account locking:"
+msgstr "Aantal onjuiste inlogpogingen voordat het account geblokkeerd wordt:"
+
+#: user-locker.php:290
+msgid "Save settings"
+msgstr "Opslaan instellingen"
+
+#. Plugin Name of an extension
+msgid "User Locker"
+msgstr "User Locker"
+
+#. Plugin URI of an extension
+msgid "http://www.poradnik-webmastera.com/projekty/user_locker/"
+msgstr "http://www.poradnik-webmastera.com/projekty/user_locker/"
+
+#. Description of an extension
+msgid "This plugin locks user account after given number of incorrect login attempts."
+msgstr "Deze plugin blokkeert een gebruikersaccount na het ingestelde aantal onjuiste inlog pogingen."
+
+#. Author of an extension
+msgid "Daniel Frużyński"
+msgstr "Daniel Frużyński"
+
+#. Author URI of an extension
+msgid "http://www.poradnik-webmastera.com/"
+msgstr "http://www.poradnik-webmastera.com/"
+

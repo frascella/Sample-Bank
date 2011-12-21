@@ -119,7 +119,7 @@ class WP_Users_List_Table extends WP_List_Table {
 		return $role_links;
 	}
 
-	function get_bulk_actions() {
+	function _get_bulk_actions() {
 		$actions = array();
 
 		if ( is_multisite() ) {
@@ -160,9 +160,10 @@ class WP_Users_List_Table extends WP_List_Table {
 	function get_columns() {
 		$c = array(
 			'cb'       => '<input type="checkbox" />',
-			'username' => __( 'Username' ),
-			'name'     => __( 'Name' ),
-			'email'    => __( 'E-mail' ),
+			'username' => __( 'E-mail' ),
+            'name'     => __( 'Name' ),
+			'company'     => __( 'Company' ),
+			//'email'    => __( 'E-mail' ),
 			'role'     => __( 'Role' ),
 			'posts'    => __( 'Posts' )
 		);
@@ -176,7 +177,8 @@ class WP_Users_List_Table extends WP_List_Table {
 	function get_sortable_columns() {
 		$c = array(
 			'username' => 'login',
-			'name'     => 'name',
+            'name'     => 'name',
+			//'company'     => 'company',
 			'email'    => 'email',
 		);
 
@@ -215,14 +217,14 @@ class WP_Users_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	function single_row( $user_object, $style = '', $role = '', $numposts = 0 ) {
-		global $wp_roles;
+        global $wp_roles;
 
 		if ( !( is_object( $user_object ) && is_a( $user_object, 'WP_User' ) ) )
 			$user_object = new WP_User( (int) $user_object );
 		$user_object = sanitize_user_object( $user_object, 'display' );
-		$email = $user_object->user_email;
-
-		if ( $this->is_site_users )
+        $email = $user_object->user_email;
+        $company = $user_object->user_url;
+        if ( $this->is_site_users )
 			$url = "site-users.php?id={$this->site_id}&amp;";
 		else
 			$url = 'users.php?';
@@ -249,7 +251,10 @@ class WP_Users_List_Table extends WP_List_Table {
 			}
 
 			if ( !is_multisite() && get_current_user_id() != $user_object->ID && current_user_can( 'delete_user', $user_object->ID ) )
-				$actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url( "users.php?action=delete&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Delete' ) . "</a>";
+            {
+                //$actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url( "users.php?action=delete&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Delete' ) . "</a>";
+            }
+				
 			if ( is_multisite() && get_current_user_id() != $user_object->ID && current_user_can( 'remove_user', $user_object->ID ) )
 				$actions['remove'] = "<a class='submitdelete' href='" . wp_nonce_url( $url."action=remove&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Remove' ) . "</a>";
 			$actions = apply_filters( 'user_row_actions', $actions, $user_object );
@@ -265,7 +270,7 @@ class WP_Users_List_Table extends WP_List_Table {
 		$avatar = get_avatar( $user_object->ID, 32 );
 
 		$r = "<tr id='user-$user_object->ID'$style>";
-
+        
 		list( $columns, $hidden ) = $this->get_column_info();
 
 		foreach ( $columns as $column_name => $column_display_name ) {
@@ -276,7 +281,7 @@ class WP_Users_List_Table extends WP_List_Table {
 				$style = ' style="display:none;"';
 
 			$attributes = "$class$style";
-
+            
 			switch ( $column_name ) {
 				case 'cb':
 					$r .= "<th scope='row' class='check-column'>$checkbox</th>";
@@ -284,8 +289,14 @@ class WP_Users_List_Table extends WP_List_Table {
 				case 'username':
 					$r .= "<td $attributes>$avatar $edit</td>";
 					break;
-				case 'name':
-					$r .= "<td $attributes>$user_object->first_name $user_object->last_name</td>";
+                case 'name':
+                    $r .= "<td $attributes>$user_object->first_name $user_object->last_name</td>";
+                    break;
+				case 'company':
+                    if (strlen($user_object->user_url)!=0)
+					    $r .= "<td $attributes>$user_object->user_url</td>";
+                    else
+                        $r .= "<td $attributes>&nbsp;</td>";
 					break;
 				case 'email':
 					$r .= "<td $attributes><a href='mailto:$email' title='" . esc_attr( sprintf( __( 'E-mail: %s' ), $email ) ) . "'>$email</a></td>";

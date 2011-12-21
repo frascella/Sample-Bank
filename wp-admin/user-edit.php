@@ -36,17 +36,7 @@ if ( current_user_can('edit_users') && !is_user_admin() )
 else
 	$parent_file = 'profile.php';
 
-// contextual help - choose Help on the top right of admin panel to preview this.
-add_contextual_help($current_screen,
-    '<p>' . __('Your profile contains information about you (your &#8220;account&#8221;) as well as some personal options related to using WordPress.') . '</p>' .
-    '<p>' . __('You can change your password, turn on keyboard shortcuts, change the color scheme of your WordPress administration screens, and turn off the WYSIWYG (Visual) editor, among other things.') . '</p>' .
-    '<p>' . __('Your username cannot be changed, but you can use other fields to enter your real name or a nickname, and change which name to display on your posts.') . '</p>' .
-    '<p>' . __('Required fields are indicated; the rest are optional. Profile information will only be displayed if your theme is set up to do so.') . '</p>' .
-    '<p>' . __('Remember to click the Update Profile button when you are finished.') . '</p>' .
-    '<p><strong>' . __('For more information:') . '</strong></p>' .
-    '<p>' . __('<a href="http://codex.wordpress.org/Users_Your_Profile_Screen" target="_blank">Documentation on User Profiles</a>') . '</p>' .
-    '<p>' . __('<a href="http://wordpress.org/support/" target="_blank">Support Forums</a>') . '</p>'
-);
+
 
 
 $wp_http_referer = remove_query_arg(array('update', 'delete_count'), stripslashes($wp_http_referer));
@@ -73,11 +63,10 @@ function use_ssl_preference($user) {
 // Only allow super admins on multisite to edit every user.
 if ( is_multisite() && ! current_user_can( 'manage_network_users' ) && $user_id != $current_user->ID && ! apply_filters( 'enable_edit_any_user_configuration', true ) )
 	wp_die( __( 'You do not have permission to edit this user.' ) );
-
 // Execute confirmed email change. See send_confirmation_on_profile_email().
 if ( is_multisite() && IS_PROFILE_PAGE && isset( $_GET[ 'newuseremail' ] ) && $current_user->ID ) {
 	$new_email = get_option( $current_user->ID . '_new_email' );
-	if ( $new_email[ 'hash' ] == $_GET[ 'newuseremail' ] ) {
+    if ( $new_email[ 'hash' ] == $_GET[ 'newuseremail' ] ) {
 		$user->ID = $current_user->ID;
 		$user->user_email = esc_html( trim( $new_email[ 'newemail' ] ) );
 		if ( $wpdb->get_var( $wpdb->prepare( "SELECT user_login FROM {$wpdb->signups} WHERE user_login = %s", $current_user->user_login ) ) )
@@ -105,12 +94,10 @@ if ( IS_PROFILE_PAGE )
 	do_action('personal_options_update', $user_id);
 else
 	do_action('edit_user_profile_update', $user_id);
-
 if ( !is_multisite() ) {
 	$errors = edit_user($user_id);
 } else {
 	$user = get_userdata( $user_id );
-
 	// Update the email address in signups, if present.
 	if ( $user->user_login && isset( $_POST[ 'email' ] ) && is_email( $_POST[ 'email' ] ) && $wpdb->get_var( $wpdb->prepare( "SELECT user_login FROM {$wpdb->signups} WHERE user_login = %s", $user->user_login ) ) )
 		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->signups} SET user_email = %s WHERE user_login = %s", $_POST[ 'email' ], $user_login ) );
@@ -193,12 +180,7 @@ if ( ! IS_PROFILE_PAGE ) {
 <h3><?php _e('Personal Options'); ?></h3>
 
 <table class="form-table">
-<?php if ( rich_edit_exists() && !( IS_PROFILE_PAGE && !$user_can_edit ) ) : // don't bother showing the option if the editor has been removed ?>
-	<tr>
-		<th scope="row"><?php _e('Visual Editor')?></th>
-		<td><label for="rich_editing"><input name="rich_editing" type="checkbox" id="rich_editing" value="false" <?php checked('false', $profileuser->rich_editing); ?> /> <?php _e('Disable the visual editor when writing'); ?></label></td>
-	</tr>
-<?php endif; ?>
+
 <?php if ( count($_wp_admin_css_colors) > 1 && has_action('admin_color_scheme_picker') ) : ?>
 <tr>
 <th scope="row"><?php _e('Admin Color Scheme')?></th>
@@ -206,23 +188,8 @@ if ( ! IS_PROFILE_PAGE ) {
 </tr>
 <?php
 endif; // $_wp_admin_css_colors
-if ( !( IS_PROFILE_PAGE && !$user_can_edit ) ) : ?>
-<tr>
-<th scope="row"><?php _e( 'Keyboard Shortcuts' ); ?></th>
-<td><label for="comment_shortcuts"><input type="checkbox" name="comment_shortcuts" id="comment_shortcuts" value="true" <?php if ( !empty($profileuser->comment_shortcuts) ) checked('true', $profileuser->comment_shortcuts); ?> /> <?php _e('Enable keyboard shortcuts for comment moderation.'); ?></label> <?php _e('<a href="http://codex.wordpress.org/Keyboard_Shortcuts" target="_blank">More information</a>'); ?></td>
-</tr>
-<?php endif; ?>
-<tr class="show-admin-bar">
-<th scope="row"><?php _e('Show Admin Bar')?></th>
-<td><fieldset><legend class="screen-reader-text"><span><?php _e('Show Admin Bar') ?></span></legend>
-<label for="admin_bar_front">
-<input name="admin_bar_front" type="checkbox" id="admin_bar_front" value="1" <?php checked( _get_admin_bar_pref( 'front', $profileuser->ID ) ); ?> />
-<?php /* translators: Show admin bar when viewing site */ _e( 'when viewing site' ); ?></label><br />
-<label for="admin_bar_admin">
-<input name="admin_bar_admin" type="checkbox" id="admin_bar_admin" value="1" <?php checked( _get_admin_bar_pref( 'admin', $profileuser->ID ) ); ?> />
-<?php /* translators: Show admin bar in dashboard */ _e( 'in dashboard' ); ?></label></fieldset>
-</td>
-</tr>
+?>
+
 <?php do_action('personal_options', $profileuser); ?>
 </table>
 <?php
@@ -230,13 +197,27 @@ if ( !( IS_PROFILE_PAGE && !$user_can_edit ) ) : ?>
 		do_action('profile_personal_options', $profileuser);
 ?>
 
-<h3><?php _e('Name') ?></h3>
+<h3><?php _e('Account Information') ?></h3>
 
 <table class="form-table">
-	<tr>
-		<th><label for="user_login"><?php _e('Username'); ?></label></th>
-		<td><input type="text" name="user_login" id="user_login" value="<?php echo esc_attr($profileuser->user_login); ?>" disabled="disabled" class="regular-text" /> <span class="description"><?php _e('Usernames cannot be changed.'); ?></span></td>
-	</tr>
+	<!--<tr>
+		<th><label for="user_login"><?php _e('Email'); ?></label></th>
+		<td><input type="text" name="user_login" id="user_login" value="<?php 
+            echo esc_attr($profileuser->user_login); 
+            ?>" disabled="disabled" class="regular-text" /> <span class="description"><?php _e('Usernames cannot be changed.'); ?></span></td>
+	</tr-->
+<tr>
+    <th><label for="email"><?php _e('E-mail'); ?> <span class="description"><?php _e('(required)'); ?></span></label></th>
+    <td><input type="text" name="email" id="email" value="<?php echo esc_attr($profileuser->user_email) ?>" class="regular-text" />
+    <?php
+    $new_email = get_option( $current_user->ID . '_new_email' );
+    if ( $new_email && $new_email != $current_user->user_email ) : ?>
+    <div class="updated inline">
+    <p><?php printf( __('There is a pending change of your e-mail to <code>%1$s</code>. <a href="%2$s">Cancel</a>'), $new_email['newemail'], esc_url( self_admin_url( 'profile.php?dismiss=' . $current_user->ID . '_new_email' ) ) ); ?></p>
+    </div>
+    <?php endif; ?>
+    </td>
+</tr>
 
 <?php if ( !IS_PROFILE_PAGE && !is_network_admin() ) : ?>
 <tr><th><label for="role"><?php _e('Role:') ?></label></th>
@@ -270,99 +251,32 @@ if ( is_multisite() && is_network_admin() && ! IS_PROFILE_PAGE && current_user_c
 </td></tr>
 <?php } ?>
 
-<tr>
-	<th><label for="first_name"><?php _e('First Name') ?></label></th>
-	<td><input type="text" name="first_name" id="first_name" value="<?php echo esc_attr($profileuser->first_name) ?>" class="regular-text" /></td>
-</tr>
-
-<tr>
-	<th><label for="last_name"><?php _e('Last Name') ?></label></th>
-	<td><input type="text" name="last_name" id="last_name" value="<?php echo esc_attr($profileuser->last_name) ?>" class="regular-text" /></td>
-</tr>
-
-<tr>
-	<th><label for="nickname"><?php _e('Nickname'); ?> <span class="description"><?php _e('(required)'); ?></span></label></th>
-	<td><input type="text" name="nickname" id="nickname" value="<?php echo esc_attr($profileuser->nickname) ?>" class="regular-text" /></td>
-</tr>
-
-<tr>
-	<th><label for="display_name"><?php _e('Display name publicly as') ?></label></th>
-	<td>
-		<select name="display_name" id="display_name">
-		<?php
-			$public_display = array();
-			$public_display['display_nickname']  = $profileuser->nickname;
-			$public_display['display_username']  = $profileuser->user_login;
-
-			if ( !empty($profileuser->first_name) )
-				$public_display['display_firstname'] = $profileuser->first_name;
-
-			if ( !empty($profileuser->last_name) )
-				$public_display['display_lastname'] = $profileuser->last_name;
-
-			if ( !empty($profileuser->first_name) && !empty($profileuser->last_name) ) {
-				$public_display['display_firstlast'] = $profileuser->first_name . ' ' . $profileuser->last_name;
-				$public_display['display_lastfirst'] = $profileuser->last_name . ' ' . $profileuser->first_name;
-			}
-
-			if ( !in_array( $profileuser->display_name, $public_display ) ) // Only add this if it isn't duplicated elsewhere
-				$public_display = array( 'display_displayname' => $profileuser->display_name ) + $public_display;
-
-			$public_display = array_map( 'trim', $public_display );
-			$public_display = array_unique( $public_display );
-
-			foreach ( $public_display as $id => $item ) {
-		?>
-			<option id="<?php echo $id; ?>"<?php selected( $profileuser->display_name, $item ); ?>><?php echo $item; ?></option>
-		<?php
-			}
-		?>
-		</select>
-	</td>
-</tr>
 </table>
 
-<h3><?php _e('Contact Info') ?></h3>
+<h3><?php _e('Contact Information') ?></h3>
 
 <table class="form-table">
+
 <tr>
-	<th><label for="email"><?php _e('E-mail'); ?> <span class="description"><?php _e('(required)'); ?></span></label></th>
-	<td><input type="text" name="email" id="email" value="<?php echo esc_attr($profileuser->user_email) ?>" class="regular-text" />
-	<?php
-	$new_email = get_option( $current_user->ID . '_new_email' );
-	if ( $new_email && $new_email != $current_user->user_email ) : ?>
-	<div class="updated inline">
-	<p><?php printf( __('There is a pending change of your e-mail to <code>%1$s</code>. <a href="%2$s">Cancel</a>'), $new_email['newemail'], esc_url( self_admin_url( 'profile.php?dismiss=' . $current_user->ID . '_new_email' ) ) ); ?></p>
-	</div>
-	<?php endif; ?>
-	</td>
+    <th><label for="first_name"><?php _e('First Name') ?></label></th>
+    <td><input type="text" name="first_name" id="first_name" value="<?php echo esc_attr($profileuser->first_name) ?>" class="regular-text" /></td>
 </tr>
 
 <tr>
-	<th><label for="url"><?php _e('Website') ?></label></th>
+    <th><label for="last_name"><?php _e('Last Name') ?></label></th>
+    <td><input type="text" name="last_name" id="last_name" value="<?php echo esc_attr($profileuser->last_name) ?>" class="regular-text" /></td>
+</tr>
+
+<tr>
+	<th><label for="url"><?php _e('Company') ?></label></th>
 	<td><input type="text" name="url" id="url" value="<?php echo esc_attr($profileuser->user_url) ?>" class="regular-text code" /></td>
 </tr>
 
-<?php
-	foreach (_wp_get_user_contactmethods( $profileuser ) as $name => $desc) {
-?>
-<tr>
-	<th><label for="<?php echo $name; ?>"><?php echo apply_filters('user_'.$name.'_label', $desc); ?></label></th>
-	<td><input type="text" name="<?php echo $name; ?>" id="<?php echo $name; ?>" value="<?php echo esc_attr($profileuser->$name) ?>" class="regular-text" /></td>
-</tr>
-<?php
-	}
-?>
 </table>
 
-<h3><?php IS_PROFILE_PAGE ? _e('About Yourself') : _e('About the user'); ?></h3>
+
 
 <table class="form-table">
-<tr>
-	<th><label for="description"><?php _e('Biographical Info'); ?></label></th>
-	<td><textarea name="description" id="description" rows="5" cols="30"><?php echo $profileuser->description; // textarea_escaped ?></textarea><br />
-	<span class="description"><?php _e('Share a little biographical information to fill out your profile. This may be shown publicly.'); ?></span></td>
-</tr>
 
 <?php
 $show_password_fields = apply_filters('show_password_fields', true, $profileuser);
