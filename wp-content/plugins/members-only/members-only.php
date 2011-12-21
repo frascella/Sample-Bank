@@ -660,8 +660,8 @@ if ($members_only_opt['members_only'] == TRUE) //Check if Members Only is Active
 {
 	add_action('template_redirect', 'members_only');
 	add_action('init', 'members_only_init');
-	add_action('show_user_profile', 'members_only_display_feedkey');
-	add_action('edit_user_profile', 'members_only_display_feedkey');
+	//add_action('show_user_profile', 'members_only_display_feedkey');
+	//add_action('edit_user_profile', 'members_only_display_feedkey');
 	add_action('profile_update', 'members_only_reset_feedkey');
 }
 

@@ -65,10 +65,10 @@ function edit_user( $user_id = 0 ) {
 		$update = false;
 	}
 
-	if ( !$update && isset( $_POST['user_login'] ) )
-		$user->user_login = sanitize_user($_POST['user_login'], true);
-
-	$pass1 = $pass2 = '';
+	//if ( !$update && isset( $_POST['user_login'] ) )
+        //$user->user_login = sanitize_user($_POST['user_login'], true);
+        
+    $pass1 = $pass2 = '';
 	if ( isset( $_POST['pass1'] ))
 		$pass1 = $_POST['pass1'];
 	if ( isset( $_POST['pass2'] ))
@@ -89,13 +89,17 @@ function edit_user( $user_id = 0 ) {
 	}
 
 	if ( isset( $_POST['email'] ))
+    {
+        $user->user_login = sanitize_text_field( $_POST['email'] );
 		$user->user_email = sanitize_text_field( $_POST['email'] );
-	if ( isset( $_POST['url'] ) ) {
+    }
+    if ( isset( $_POST['url'] ) ) {
 		if ( empty ( $_POST['url'] ) || $_POST['url'] == 'http://' ) {
-			$user->user_url = '';
+            $user->user_url = '';
 		} else {
-			$user->user_url = esc_url_raw( $_POST['url'] );
-			$user->user_url = preg_match('/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $user->user_url) ? $user->user_url : 'http://'.$user->user_url;
+            //$user->user_url = esc_url_raw( $_POST['url'] );
+            //$user->user_url = preg_match('/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $user->user_url) ? $user->user_url : 'http://'.$user->user_url;
+			$user->user_url = $_POST['url'];
 		}
 	}
 	if ( isset( $_POST['first_name'] ) )
@@ -163,8 +167,8 @@ function edit_user( $user_id = 0 ) {
 	if ( !$update && isset( $_POST['user_login'] ) && !validate_username( $_POST['user_login'] ) )
 		$errors->add( 'user_login', __( '<strong>ERROR</strong>: This username is invalid because it uses illegal characters. Please enter a valid username.' ));
 
-	if ( !$update && username_exists( $user->user_login ) )
-		$errors->add( 'user_login', __( '<strong>ERROR</strong>: This username is already registered. Please choose another one.' ));
+	//if ( !$update && username_exists( $user->user_login ) )
+		//$errors->add( 'user_login', __( '<strong>ERROR</strong>: This username is already registered. Please choose another one.' ));
 
 	/* checking e-mail address */
 	if ( empty( $user->user_email ) ) {
@@ -180,8 +184,7 @@ function edit_user( $user_id = 0 ) {
 
 	if ( $errors->get_error_codes() )
 		return $errors;
-
-	if ( $update ) {
+    if ( $update ) {
 		$user_id = wp_update_user( get_object_vars( $user ) );
 	} else {
 		$user_id = wp_insert_user( get_object_vars( $user ) );
@@ -225,19 +228,16 @@ function get_editable_roles() {
  */
 function get_user_to_edit( $user_id ) {
 	$user = new WP_User( $user_id );
-
-	$user_contactmethods = _wp_get_user_contactmethods( $user );
-	foreach ($user_contactmethods as $method => $name) {
+    /*$user_contactmethods = _wp_get_user_contactmethods( $user );
+    foreach ($user_contactmethods as $method => $name) {
 		if ( empty( $user->{$method} ) )
 			$user->{$method} = '';
-	}
+	}*/
 
 	if ( empty($user->description) )
 		$user->description = '';
-
-	$user = sanitize_user_object($user, 'edit');
-
-	return $user;
+    //$user = sanitize_user_object($user, 'edit');
+    return $user;
 }
 
 /**
