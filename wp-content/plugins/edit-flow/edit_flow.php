@@ -44,7 +44,7 @@ include_once( EDIT_FLOW_ROOT . '/php/custom_status.php' );
 include_once( EDIT_FLOW_ROOT . '/php/dashboard.php' );
 include_once( EDIT_FLOW_ROOT . '/php/post.php' );
 include_once( EDIT_FLOW_ROOT . '/php/notifications.php' );
-include_once( EDIT_FLOW_ROOT . '/php/usergroups.php' );
+//include_once( EDIT_FLOW_ROOT . '/php/usergroups.php' );
 include_once( EDIT_FLOW_ROOT . '/php/templates/functions.php' );
 include_once( EDIT_FLOW_ROOT . '/php/upgrade.php' );
 include_once( EDIT_FLOW_ROOT . '/php/util.php' );
@@ -83,7 +83,7 @@ class edit_flow {
 	var $dashboard			= null;
 	var $post_status 		= null;
 	var $notifications		= null;
-	var $usergroups			= null;
+	//var $usergroups			= null;
 	var $story_budget		= null;
 
 	/**
@@ -103,7 +103,7 @@ class edit_flow {
 				
 		// Create all of our objects
 		$this->custom_status = new EF_Custom_Status();
-		$this->usergroups = new EF_Usergroups_Admin();
+		//$this->usergroups = new EF_Usergroups_Admin();
 		$this->ef_post_metadata = new EF_Post_Metadata();
 		$this->editorial_metadata = new EF_Editorial_Metadata();
 		$this->calendar = new EF_Calendar();
@@ -262,9 +262,9 @@ class edit_flow {
 			$component = substr( $page, ( strrpos( $page, '/' ) + 1 ) );
 			
 			switch( $component ) {
-				case 'usergroups':
+				/*case 'usergroups':
 					$this->usergroups->admin_controller();
-					break;
+					break;*/
 				
 				case 'custom_status':
 					$this->custom_status->admin_controller();
@@ -295,7 +295,7 @@ class edit_flow {
                         'edit-tags.php?taxonomy='.$this->editorial_metadata->metadata_taxonomy);
 		
 		// Add sub-menu page for User Groups
-		add_submenu_page($this->get_page('edit-flow'), __('Usergroups', 'edit-flow'), __('Usergroups', 'edit-flow'), 'manage_options', $this->get_page('usergroups'), array(&$this->usergroups,'admin_page'));
+		//add_submenu_page($this->get_page('edit-flow'), __('Usergroups', 'edit-flow'), __('Usergroups', 'edit-flow'), 'manage_options', $this->get_page('usergroups'), array(&$this->usergroups,'admin_page'));
 		
 		// Add sub-menu page for Calendar
 		if ( (int) $this->get_plugin_option( 'calendar_enabled' ) ) {

@@ -128,7 +128,7 @@ class WP_Posts_List_Table extends WP_List_Table {
 	}
 
 	function get_views() {
-		global $post_type, $post_type_object, $locked_post_status, $avail_post_stati;
+		global $post_type, $post_type_object, $locked_post_status, $avail_post_stati, $wpdb;
 
 		if ( !empty($locked_post_status) )
 			return array();
@@ -174,17 +174,16 @@ class WP_Posts_List_Table extends WP_List_Table {
 
 			if ( isset($_REQUEST['post_status']) && $status_name == $_REQUEST['post_status'] )
 				$class = ' class="current"';
-			/*if ( (get_user_role() == 'contributor') ){
+			if ( (get_user_role() == 'contributor') ){
 				$this->contributor_posts_count = $wpdb->get_var( $wpdb->prepare( "
 					SELECT COUNT( 1 ) FROM $wpdb->posts
-					WHERE post_type = %s 
-					AND post_author = %d
-				", $post_type, get_current_user_id() ) );
-			} else {*/
-				$this->contributors_post_count = $num_posts->$status_name;
-			//}
+					WHERE post_author = %d AND post_type = %s AND post_status = %s 
+				", $current_user_id, $post_type, $status_name ) );
+			} else {
+				$this->contributor_posts_count = $num_posts->$status_name;
+			}
 
-			$status_links[$status_name] = "<a href='edit.php?post_status=$status_name$filter_author&amp;post_type=$post_type'$class>" . sprintf( translate_nooped_plural( $status->label_count, $this->contributors_post_count ), number_format_i18n( $this->contributors_post_count ) ) . '</a>';
+			$status_links[$status_name] = "<a href='edit.php?post_status=$status_name$filter_author&amp;post_type=$post_type'$class>" . sprintf( translate_nooped_plural( $status->label_count, $this->contributor_posts_count ), number_format_i18n( $this->contributor_posts_count ) ) . '</a>';
 		}
 
 		if ( ! empty( $this->sticky_posts_count ) ) {
