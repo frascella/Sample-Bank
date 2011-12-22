@@ -276,8 +276,8 @@ function wp_dashboard_right_now() {
 	echo '</tr><tr>';
     
     if ( current_user_can( 'edit_posts' ) ) {
-        $numdraft = "<a href='edit.php'>$numdraft</a>";
-        $textdraft = "<a href='edit.php'>$textdraft</a>";
+        $numdraft = "<a href='edit.php?post_status=draft'>$numdraft</a>";
+        $textdraft = "<a href='edit.php?post_status=draft'>$textdraft</a>";
     }
     echo '<td class="first b b-posts">' . $numdraft . '</td>';
     echo '<td class="t draft">' . $textdraft . '</td>';
