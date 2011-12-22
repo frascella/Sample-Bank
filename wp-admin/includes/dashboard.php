@@ -51,7 +51,7 @@ function wp_dashboard_setup() {
 			);
 		}
 		$recent_comments_title = __( 'Recent Comments' );
-		wp_add_dashboard_widget( 'dashboard_recent_comments', $recent_comments_title, 'wp_dashboard_recent_comments', 'wp_dashboard_recent_comments_control' );
+		//wp_add_dashboard_widget( 'dashboard_recent_comments', $recent_comments_title, 'wp_dashboard_recent_comments', 'wp_dashboard_recent_comments_control' );
 	}
 
 	// Incoming Links Widget
@@ -67,20 +67,20 @@ function wp_dashboard_setup() {
 				'show_date' => isset($widget_options['dashboard_incoming_links']['show_date']) ? $widget_options['dashboard_incoming_links']['show_date'] : false
 			);
 		}
-		wp_add_dashboard_widget( 'dashboard_incoming_links', __( 'Incoming Links' ), 'wp_dashboard_incoming_links', 'wp_dashboard_incoming_links_control' );
+		//wp_add_dashboard_widget( 'dashboard_incoming_links', __( 'Incoming Links' ), 'wp_dashboard_incoming_links', 'wp_dashboard_incoming_links_control' );
 	}
 
 	// WP Plugins Widget
-	if ( ( ! is_multisite() && is_blog_admin() && current_user_can( 'install_plugins' ) ) || ( is_network_admin() && current_user_can( 'manage_network_plugins' ) && current_user_can( 'install_plugins' ) ) )
-		wp_add_dashboard_widget( 'dashboard_plugins', __( 'Plugins' ), 'wp_dashboard_plugins' );
+	//if ( ( ! is_multisite() && is_blog_admin() && current_user_can( 'install_plugins' ) ) || ( is_network_admin() && current_user_can( 'manage_network_plugins' ) && current_user_can( 'install_plugins' ) ) )
+		//wp_add_dashboard_widget( 'dashboard_plugins', __( 'Plugins' ), 'wp_dashboard_plugins' );
 
 	// QuickPress Widget
-	if ( is_blog_admin() && current_user_can('edit_posts') )
-		wp_add_dashboard_widget( 'dashboard_quick_press', __( 'QuickPress' ), 'wp_dashboard_quick_press' );
+	//if ( is_blog_admin() && current_user_can('edit_posts') )
+		//wp_add_dashboard_widget( 'dashboard_quick_press', __( 'QuickPress' ), 'wp_dashboard_quick_press' );
 
 	// Recent Drafts
-	if ( is_blog_admin() && current_user_can('edit_posts') )
-		wp_add_dashboard_widget( 'dashboard_recent_drafts', __('Recent Drafts'), 'wp_dashboard_recent_drafts' );
+	//if ( is_blog_admin() && current_user_can('edit_posts') )
+		//wp_add_dashboard_widget( 'dashboard_recent_drafts', __('Recent Drafts'), 'wp_dashboard_recent_drafts' );
 
 	// Primary feed (Dev Blog) Widget
 	if ( !isset( $widget_options['dashboard_primary'] ) ) {
@@ -95,7 +95,7 @@ function wp_dashboard_setup() {
 			'show_date' => 1,
 		);
 	}
-	wp_add_dashboard_widget( 'dashboard_primary', $widget_options['dashboard_primary']['title'], 'wp_dashboard_primary', 'wp_dashboard_primary_control' );
+	//wp_add_dashboard_widget( 'dashboard_primary', $widget_options['dashboard_primary']['title'], 'wp_dashboard_primary', 'wp_dashboard_primary_control' );
 
 	// Secondary Feed (Planet) Widget
 	if ( !isset( $widget_options['dashboard_secondary'] ) ) {
@@ -110,7 +110,7 @@ function wp_dashboard_setup() {
 			'show_date' => 0,
 		);
 	}
-	wp_add_dashboard_widget( 'dashboard_secondary', $widget_options['dashboard_secondary']['title'], 'wp_dashboard_secondary', 'wp_dashboard_secondary_control' );
+	//wp_add_dashboard_widget( 'dashboard_secondary', $widget_options['dashboard_secondary']['title'], 'wp_dashboard_secondary', 'wp_dashboard_secondary_control' );
 
 	// Hook to register new widgets
 	// Filter widget order
@@ -262,9 +262,11 @@ function wp_dashboard_right_now() {
 	echo "\n\t".'<tr class="first">';
 
 	// Posts
-	$num = number_format_i18n( $num_posts->publish );
-	$text = _n( 'Post', 'Posts', intval($num_posts->publish) );
-	if ( current_user_can( 'edit_posts' ) ) {
+    $num = number_format_i18n( $num_posts->publish );
+	$numdraft = number_format_i18n( $num_posts->draft );
+    $text = _n( 'Post', 'Materials', intval($num_posts->publish) );
+	$textdraft = _n( 'Draft', 'Draft', intval($num_posts->draft) );
+    if ( current_user_can( 'edit_posts' ) ) {
 		$num = "<a href='edit.php'>$num</a>";
 		$text = "<a href='edit.php'>$text</a>";
 	}
@@ -272,6 +274,15 @@ function wp_dashboard_right_now() {
 	echo '<td class="t posts">' . $text . '</td>';
 
 	echo '</tr><tr>';
+    
+    if ( current_user_can( 'edit_posts' ) ) {
+        $numdraft = "<a href='edit.php?post_status=draft'>$numdraft</a>";
+        $textdraft = "<a href='edit.php?post_status=draft'>$textdraft</a>";
+    }
+    echo '<td class="first b b-posts">' . $numdraft . '</td>';
+    echo '<td class="t draft">' . $textdraft . '</td>';
+
+    echo '</tr><tr>';
 	/* TODO: Show status breakdown on hover
 	if ( $can_edit_pages && !empty($num_pages->publish) ) { // how many pages is not exposed in feeds.  Don't show if !current_user_can
 		$post_type_texts[] = '<a href="edit-pages.php">'.sprintf( _n( '%s page', '%s pages', $num_pages->publish ), number_format_i18n( $num_pages->publish ) ).'</a>';
@@ -296,8 +307,8 @@ function wp_dashboard_right_now() {
 		$num = "<a href='edit.php?post_type=page'>$num</a>";
 		$text = "<a href='edit.php?post_type=page'>$text</a>";
 	}
-	echo '<td class="first b b_pages">' . $num . '</td>';
-	echo '<td class="t pages">' . $text . '</td>';
+	//echo '<td class="first b b_pages">' . $num . '</td>';
+	//echo '<td class="t pages">' . $text . '</td>';
 
 	echo '</tr><tr>';
 
@@ -339,8 +350,8 @@ function wp_dashboard_right_now() {
 		$num = '<a href="edit-comments.php">' . $num . '</a>';
 		$text = '<a href="edit-comments.php">' . $text . '</a>';
 	}
-	echo '<td class="b b-comments">' . $num . '</td>';
-	echo '<td class="last t comments">' . $text . '</td>';
+	//echo '<td class="b b-comments">' . $num . '</td>';
+	//echo '<td class="last t comments">' . $text . '</td>';
 
 	echo '</tr><tr>';
 
@@ -375,8 +386,8 @@ function wp_dashboard_right_now() {
 		$num = "<a href='edit-comments.php?comment_status=spam'><span class='spam-count'>$num</span></a>";
 		$text = "<a class='spam' href='edit-comments.php?comment_status=spam'>$text</a>";
 	}
-	echo '<td class="b b-spam">' . $num . '</td>';
-	echo '<td class="last t">' . $text . '</td>';
+	//echo '<td class="b b-spam">' . $num . '</td>';
+	//echo '<td class="last t">' . $text . '</td>';
 
 	echo "</tr>";
 	do_action('right_now_table_end');
@@ -402,15 +413,15 @@ function wp_dashboard_right_now() {
 		if ( current_user_can( 'switch_themes') )
 			$switch_themes = '<a href="themes.php">' . $switch_themes . '</a>';
 		if ( current_user_can( 'edit_theme_options' ) ) {
-			printf(_n('Theme <span class="b">%1$s</span> with <span class="b"><a href="widgets.php">%2$s Widget</a></span>', 'Theme <span class="b">%1$s</span> with <span class="b"><a href="widgets.php">%2$s Widgets</a></span>', $num_widgets), $switch_themes, $num);
+			//printf(_n('Theme <span class="b">%1$s</span> with <span class="b"><a href="widgets.php">%2$s Widget</a></span>', 'Theme <span class="b">%1$s</span> with <span class="b"><a href="widgets.php">%2$s Widgets</a></span>', $num_widgets), $switch_themes, $num);
 		} else {
-			printf(_n('Theme <span class="b">%1$s</span> with <span class="b">%2$s Widget</span>', 'Theme <span class="b">%1$s</span> with <span class="b">%2$s Widgets</span>', $num_widgets), $switch_themes, $num);
+			//printf(_n('Theme <span class="b">%1$s</span> with <span class="b">%2$s Widget</span>', 'Theme <span class="b">%1$s</span> with <span class="b">%2$s Widgets</span>', $num_widgets), $switch_themes, $num);
 		}
 	} else {
-		if ( current_user_can( 'switch_themes' ) )
+		/*if ( current_user_can( 'switch_themes' ) )
 			printf( __('Theme <span class="b"><a href="themes.php">%1$s</a></span>'), $ct->title );
 		else
-			printf( __('Theme <span class="b">%1$s</span>'), $ct->title );
+			printf( __('Theme <span class="b">%1$s</span>'), $ct->title );*/
 	}
 	echo '</p>';
 

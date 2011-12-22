@@ -175,8 +175,8 @@ function upfw_engines_init(){
 		require_once('library/engines/seo-engine.php');
 
 	
-	if(function_exists('upfw_dbwidget_setup'))
-            add_action('wp_dashboard_setup', 'upfw_dbwidget_setup' );
+	//if(function_exists('upfw_dbwidget_setup'))
+            //add_action('wp_dashboard_setup', 'upfw_dbwidget_setup' );
 	
         if(function_exists('default_theme_layouts'))
             add_action('init','default_theme_layouts',1);
