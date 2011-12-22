@@ -145,7 +145,7 @@ function update_right_now_message() {
 
 	$cur = get_preferred_from_update_core();
 
-	$msg = sprintf( __('You are using <span class="b">WordPress %s</span>.'), $GLOBALS['wp_version'] );
+	//$msg = sprintf( __('You are using <span class="b">WordPress %s</span>.'), $GLOBALS['wp_version'] );
 
 	if ( isset( $cur->response ) && $cur->response == 'upgrade' && current_user_can('update_core') ) {
 		$msg .= " <a href='" . network_admin_url( 'update-core.php' ) . "' class='button'>" . sprintf( __('Update to %s'), $cur->current ? $cur->current : __( 'Latest' ) ) . '</a>';
