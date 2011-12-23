@@ -66,7 +66,7 @@ class WP_Posts_List_Table extends WP_List_Table {
 				AND post_author = %d
 			", $post_type, get_current_user_id() ) );
 
-			if ( $this->user_posts_count && empty( $_REQUEST['post_status'] ) && empty( $_REQUEST['all_posts'] ) && empty( $_REQUEST['author'] ) && empty( $_REQUEST['show_sticky'] ) )
+			if (  empty( $_REQUEST['post_status'] ) && empty( $_REQUEST['all_posts'] ) && empty( $_REQUEST['author'] ) && empty( $_REQUEST['show_sticky'] ) )
 				$_GET['author'] = get_current_user_id();
 		}
 
@@ -140,12 +140,12 @@ class WP_Posts_List_Table extends WP_List_Table {
 
 		$current_user_id = get_current_user_id();
 
-		if ( $this->user_posts_count ) {
-			if ( isset( $_GET['author'] ) && ( $_GET['author'] == $current_user_id ) )
-				$class = ' class="current"';
-			$status_links['mine'] = "<a href='edit.php?post_type=$post_type&author=$current_user_id'$class>" . sprintf( _nx( 'Mine <span class="count">(%s)</span>', 'Mine <span class="count">(%s)</span>', $this->user_posts_count, 'posts' ), number_format_i18n( $this->user_posts_count ) ) . '</a>';
-			$allposts = '&all_posts=1';
-		}
+		//if ( $this->user_posts_count) {
+		if ( get_user_role() == 'contributor'  )
+			$class = ' class="current"';
+		$status_links['mine'] = "<a href='edit.php?post_type=$post_type&author=$current_user_id'$class>" . sprintf( _nx( 'Mine <span class="count">(%s)</span>', 'Mine <span class="count">(%s)</span>', $this->user_posts_count, 'posts' ), number_format_i18n( $this->user_posts_count ) ) . '</a>';
+		$allposts = '&all_posts=1';
+		//}
 
 		$total_posts = array_sum( (array) $num_posts );
 
@@ -169,7 +169,7 @@ class WP_Posts_List_Table extends WP_List_Table {
 			if ( !in_array( $status_name, $avail_post_stati ) )
 				continue;
 
-			if ( empty( $num_posts->$status_name ) )
+			if ( empty( $num_posts->$status_name ) && ($status_name == 'future' || $status_name == 'private') )
 				continue;
 
 			if ( isset($_REQUEST['post_status']) && $status_name == $_REQUEST['post_status'] )
