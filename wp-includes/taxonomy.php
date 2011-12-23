@@ -2888,10 +2888,10 @@ function get_term_link( $term, $taxonomy = '') {
 
 	$slug = $term->slug;
 	$t = get_taxonomy($taxonomy);
-
-	if ( empty($termlink) ) {
+    if ( empty($termlink) ) {
 		if ( 'category' == $taxonomy )
-			$termlink = '?cat=' . $term->term_id;
+            $termlink = '?hoangcat=' . $term->term_id;
+			//$termlink = '?cat=' . $term->term_id;
 		elseif ( $t->query_var )
 			$termlink = "?$t->query_var=$slug";
 		else
@@ -2918,7 +2918,7 @@ function get_term_link( $term, $taxonomy = '') {
 		$termlink = apply_filters( 'tag_link', $termlink, $term->term_id );
 	elseif ( 'category' == $taxonomy )
 		$termlink = apply_filters( 'category_link', $termlink, $term->term_id );
-
+    
 	return apply_filters('term_link', $termlink, $term, $taxonomy);
 }
 

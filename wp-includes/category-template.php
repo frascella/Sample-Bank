@@ -20,8 +20,7 @@ function get_category_link( $category ) {
 		$category = (int) $category;
 
 	$category = get_term_link( $category, 'category' );
-
-	if ( is_wp_error( $category ) )
+    if ( is_wp_error( $category ) )
 		return '';
 
 	return $category;
