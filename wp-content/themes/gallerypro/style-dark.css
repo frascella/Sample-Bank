@@ -70,7 +70,7 @@ body {
   background: #000 url("images/dark/body-background.jpg") center top;
   color: #AFAFAF;
   font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
-  font-size: 90%;
+  font-size: 100%;
   font-style: normal;
   line-height: 2em;
 }
@@ -542,9 +542,10 @@ span.cover-up{
   -webkit-border-radius: 3px;
   border-radius: 3px;
 }
+/* category checkbox */
 .main-aside .xoxo li div{
   padding: 0;
-  font-size: .8em;
+  font-size: 1.0em;
   line-height: 2em;
 }
 .main-aside .xoxo form{
