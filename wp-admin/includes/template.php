@@ -1892,7 +1892,8 @@ function screen_layout($screen) {
 		++$i;
 	}
 	$return .= "</div>\n";
-	return $return;
+    return null;
+	//return $return;
 }
 
 /**

@@ -264,8 +264,8 @@ function wp_dashboard_right_now() {
 	// Posts
     $num = number_format_i18n( $num_posts->publish );
 	$numdraft = number_format_i18n( $num_posts->draft );
-    $text = _n( 'Post', 'Materials', intval($num_posts->publish) );
-	$textdraft = _n( 'Draft', 'Draft', intval($num_posts->draft) );
+    $text = _n( 'Material', 'Materials', intval($num_posts->publish) );
+	$textdraft = _n( 'Draft', 'Drafts', intval($num_posts->draft) );
     if ( current_user_can( 'edit_posts' ) ) {
 		$num = "<a href='edit.php'>$num</a>";
 		$text = "<a href='edit.php'>$text</a>";
@@ -319,8 +319,8 @@ function wp_dashboard_right_now() {
 		$num = "<a href='edit-tags.php?taxonomy=category'>$num</a>";
 		$text = "<a href='edit-tags.php?taxonomy=category'>$text</a>";
 	}
-	echo '<td class="first b b-cats">' . $num . '</td>';
-	echo '<td class="t cats">' . $text . '</td>';
+	//echo '<td class="first b b-cats">' . $num . '</td>';
+	//echo '<td class="t cats">' . $text . '</td>';
 
 	echo '</tr><tr>';
 
@@ -331,16 +331,16 @@ function wp_dashboard_right_now() {
 		$num = "<a href='edit-tags.php'>$num</a>";
 		$text = "<a href='edit-tags.php'>$text</a>";
 	}
-	echo '<td class="first b b-tags">' . $num . '</td>';
-	echo '<td class="t tags">' . $text . '</td>';
+	//echo '<td class="first b b-tags">' . $num . '</td>';
+	//echo '<td class="t tags">' . $text . '</td>';
 
 	echo "</tr>";
 	do_action('right_now_content_table_end');
 	echo "\n\t</table>\n\t</div>";
 
 
-	echo "\n\t".'<div class="table table_discussion">';
-	echo "\n\t".'<p class="sub">' . __('Discussion') . '</p>'."\n\t".'<table>';
+	/*echo "\n\t".'<div class="table table_discussion">';
+	//echo "\n\t".'<p class="sub">' . __('Discussion') . '</p>'."\n\t".'<table>';
 	echo "\n\t".'<tr class="first">';
 
 	// Total Comments
@@ -362,8 +362,8 @@ function wp_dashboard_right_now() {
 		$num = "<a href='edit-comments.php?comment_status=approved'>$num</a>";
 		$text = "<a class='approved' href='edit-comments.php?comment_status=approved'>$text</a>";
 	}
-	echo '<td class="b b_approved">' . $num . '</td>';
-	echo '<td class="last t">' . $text . '</td>';
+	//echo '<td class="b b_approved">' . $num . '</td>';
+	//echo '<td class="last t">' . $text . '</td>';
 
 	echo "</tr>\n\t<tr>";
 
@@ -374,8 +374,8 @@ function wp_dashboard_right_now() {
 		$num = "<a href='edit-comments.php?comment_status=moderated'>$num</a>";
 		$text = "<a class='waiting' href='edit-comments.php?comment_status=moderated'>$text</a>";
 	}
-	echo '<td class="b b-waiting">' . $num . '</td>';
-	echo '<td class="last t">' . $text . '</td>';
+	//echo '<td class="b b-waiting">' . $num . '</td>';
+	//echo '<td class="last t">' . $text . '</td>';
 
 	echo "</tr>\n\t<tr>";
 
@@ -392,7 +392,7 @@ function wp_dashboard_right_now() {
 	echo "</tr>";
 	do_action('right_now_table_end');
 	do_action('right_now_discussion_table_end');
-	echo "\n\t</table>\n\t</div>";
+	echo "\n\t</table>\n\t</div>";*/
 
 	echo "\n\t".'<div class="versions">';
 	$ct = current_theme_info();
