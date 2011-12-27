@@ -10,7 +10,10 @@ get_header();
             gpro_navigation_above();
             // Top Single Page Widget Area
             get_sidebar('single-top');?>
-            <div id="post-<?php the_ID(); ?>" <?php post_class( is_video_post() ); ?>>
+			<div><?php the_title(); ?></div>
+			<div><?php do_action('single_postmeta');?>
+			</div>
+            <!--div id="post-<?php the_ID(); ?>" <?php post_class( is_video_post() ); ?>>
                 <div class="entry-content">
                     <?php if(function_exists('the_ratings')) echo the_ratings(); ?>
                     <h1><?php the_title(); ?></h1>
@@ -34,7 +37,7 @@ get_header();
                     </ul>
                     <?php gpro_nav_below(); ?>
                 </div>
-            </div><!-- .post -->
+            </div--><!-- .post -->
             <div class="artwork-container">
                 <div class="entry-artwork">
                     <?php do_action('single_postmedia'); ?>

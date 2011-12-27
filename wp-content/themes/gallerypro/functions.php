@@ -417,6 +417,7 @@ add_action( 'init', 'build_taxonomies', 0 );
 
 function build_taxonomies() {
     register_taxonomy( 'country', 'post', array( 'hierarchical' => true, 'label' => 'Countries', 'query_var' => true, 'rewrite' => true ) );
+    register_taxonomy( 'mtype', 'post', array( 'hierarchical' => true, 'label' => 'Material Type', 'query_var' => true, 'rewrite' => true ) );
 }
 
 add_action( 'admin_head_media_upload_gallery_form', 'mfields_remove_gallery_setting_div' );
