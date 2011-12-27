@@ -264,8 +264,8 @@ function wp_dashboard_right_now() {
 	// Posts
     $num = number_format_i18n( $num_posts->publish );
 	$numdraft = number_format_i18n( $num_posts->draft );
-    $text = _n( 'Post', 'Materials', intval($num_posts->publish) );
-	$textdraft = _n( 'Draft', 'Draft', intval($num_posts->draft) );
+    $text = _n( 'Material', 'Materials', intval($num_posts->publish) );
+	$textdraft = _n( 'Draft', 'Drafts', intval($num_posts->draft) );
     if ( current_user_can( 'edit_posts' ) ) {
 		$num = "<a href='edit.php'>$num</a>";
 		$text = "<a href='edit.php'>$text</a>";
