@@ -1580,7 +1580,6 @@ SWFUpload.onload = function() {
 };
 //]]>
 </script>
-
 <div id="flash-upload-ui" class="hide-if-no-js">
 <?php do_action('pre-flash-upload-ui'); ?>
 
@@ -1595,7 +1594,7 @@ SWFUpload.onload = function() {
 </div>
 <?php endif; // $flash ?>
 
-<div id="html-upload-ui" <?php if ( $flash ) echo 'class="hide-if-js"'; ?>>
+<!--hide upload<div id="html-upload-ui" <?php if ( $flash ) echo 'class="hide-if-js"'; ?>>
 <?php do_action('pre-html-upload-ui'); ?>
 	<p id="async-upload-wrap">
 		<label class="screen-reader-text" for="async-upload"><?php _e('Upload'); ?></label>
@@ -1609,7 +1608,7 @@ SWFUpload.onload = function() {
 	<p><?php _e('If you want to use all capabilities of the uploader, like uploading multiple files at once, please update to lighttpd 1.5.'); ?></p>
 	<?php endif;?>
 <?php do_action('post-html-upload-ui', $flash); ?>
-</div>
+</div-->
 <?php do_action('post-upload-ui'); ?>
 <?php
 }
@@ -2351,7 +2350,7 @@ add_filter('flash_uploader', 'media_upload_use_flash');
  */
 function media_upload_flash_bypass() {
 	echo '<p class="upload-flash-bypass">';
-	printf( __('You are using the Flash uploader.  Problems?  Try the <a href="%s">Browser uploader</a> instead.'), esc_url(add_query_arg('flash', 0)) );
+	printf( __('You are using the Flash uploader.  Problems?  Try the <a href="%s">Browser uploader</a> instead.'), esc_url(add_query_arg('flash', 1)) );
 	echo '</p>';
 }
 
@@ -2371,8 +2370,8 @@ function media_upload_html_bypass($flash = true) {
 	echo "</p>\n";
 }
 
-add_action('post-flash-upload-ui', 'media_upload_flash_bypass');
-add_action('post-html-upload-ui', 'media_upload_html_bypass');
+//add_action('post-flash-upload-ui', 'media_upload_flash_bypass');
+//add_action('post-html-upload-ui', 'media_upload_html_bypass');
 
 /**
  * {@internal Missing Short Description}}
