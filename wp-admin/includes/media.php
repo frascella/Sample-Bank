@@ -15,7 +15,7 @@
  */
 function media_upload_tabs() {
 	$_default_tabs = array(
-		'type' => __('From Computer'), // handler action suffix => tab text
+		'type' => __('Upload Files'), // handler action suffix => tab text
 		'type_url' => __('From URL'),
 		'gallery' => __('Gallery'),
 		'library' => __('Media Library')
@@ -981,13 +981,13 @@ function image_attachment_fields_to_edit($form_fields, $post) {
 			'helps' => __('Alt text for the image, e.g. &#8220;The Mona Lisa&#8221;')
 		);
 
-		$form_fields['align'] = array(
+		/*$form_fields['align'] = array(
 			'label' => __('Alignment'),
 			'input' => 'html',
 			'html'  => image_align_input_fields($post, get_option('image_default_align')),
 		);
 
-		$form_fields['image-size'] = image_size_input_fields( $post, get_option('image_default_size', 'medium') );
+		$form_fields['image-size'] = image_size_input_fields( $post, get_option('image_default_size', 'medium') );*/
 
 	} else {
 		unset( $form_fields['image_alt'] );
@@ -1105,7 +1105,7 @@ function get_attachment_fields_to_edit($post, $errors = null) {
 			'label'      => __('Caption'),
 			'value'      => $edit_post->post_excerpt
 		),
-		'post_content' => array(
+		/*'post_content' => array(
 			'label'      => __('Description'),
 			'value'      => $edit_post->post_content,
 			'input'      => 'textarea'
@@ -1126,7 +1126,7 @@ function get_attachment_fields_to_edit($post, $errors = null) {
 			'html'       => "<input type='text' class='text urlfield' readonly='readonly' name='attachments[$post->ID][url]' value='" . esc_attr($image_url) . "' /><br />",
 			'value'      => wp_get_attachment_url($post->ID),
 			'helps'      => __('Location of the uploaded file.')
-		)
+		)*/
 	);
 
 	foreach ( get_attachment_taxonomies($post) as $taxonomy ) {
@@ -1638,7 +1638,6 @@ function media_upload_type_form($type = 'file', $errors = null, $id = null) {
 <input type="hidden" name="post_id" id="post_id" value="<?php echo (int) $post_id; ?>" />
 <?php wp_nonce_field('media-form'); ?>
 
-<h3 class="media-title"><?php _e('Add media files from your computer'); ?></h3>
 
 <?php media_upload_form( $errors ); ?>
 
