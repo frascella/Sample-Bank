@@ -12,12 +12,14 @@ body {
 }
 
 a {
-	color: #9C272B;
+	color: #000000;
+    text-decoration: none;
 }
 
 a:hover{
-  color: #1a1a1a;
+    color: #000000;
 	text-decoration: none;
+    background-color: #cccccc;
 }
 
 span.dropcaps {
@@ -57,7 +59,7 @@ h4 {
 	color:#21211f;
 	font-weight:400;
 	margin:0;
-	padding:15px 0 0;
+	padding:0 0 0;
 }
 
 h5 {
@@ -180,7 +182,7 @@ h2{
 }
 #content ol,
 #content ul{
-  margin-bottom: 1em;
+  margin-bottom: 0em;
 }
 .single #content li{
   line-height: 1.4em;
@@ -443,7 +445,7 @@ body #access #category-menu .sf-menu ul a {
 }
 
 .aside ul ul{
-	padding: 0 0 15px 0;
+	padding: 0 0 0 0;
 }
 
 .aside ul ul ul{
@@ -1250,7 +1252,7 @@ div.wpcf7-response-output{
 #index-bottom li.widgetcontainer,
 #single-bottom li.widgetcontainer,
 #page-bottom li.widgetcontainer{
-	width: 33%;
+	width: 100%;
 	float: left;
 }
 
