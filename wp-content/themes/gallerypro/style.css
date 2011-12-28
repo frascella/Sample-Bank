@@ -21,6 +21,9 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 /* Apply basic image styles */
 @import url('library/styles/images.css');
+/*  Wed Dec 28, 2011 15:17:03 added by Thanh Son */
+@import url('library/styles/es-styles.css');
+@import url('library/styles/jquery.es-gallery.css');
 
 /* WP Default Styles */
 .entry-content .aligncenter, .entry-content div.aligncenter {

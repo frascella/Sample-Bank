@@ -74,6 +74,7 @@ function add_scripts(){
     
     if(!is_home() || !is_page()):
 	wp_enqueue_script('gallery', $stylesheet_dir . '/js/gallery.js', array('jquery'), false );
+	wp_enqueue_script('ad-gallery', $stylesheet_dir . '/js/jquery.ad-gallery.js', array('jquery'), false );
 	wp_enqueue_script('thickbox', $stylesheet_dir . '/js/thickbox.js', array('jquery'), false );
     endif;
   }

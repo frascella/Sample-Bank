@@ -1,0 +1,36 @@
+body{margin: 0; padding:0;font-family: verdana, arial;font-size: 14px}
+h2{line-height: 25px; font-weight: bold; font-size: 14px}
+.icon{width:20px;}
+.container{position:relative;}
+.right{float:right; position:absolute; right:0;}
+.left{float:left; }
+.es-content{width: 980px; margin: 0 auto;}
+.es-sidebar-container{width:230px;}
+.es-detail-container{margin-right:250px;}
+.es-content-container{margin-left:20px;margin-right:20px}
+.es-before-material-container, .es-after-material-container{border: solid 2px #DDD; border-radius: 10px; margin-bottom:20px; margin-top:20px}
+.es-related-material-container{border: solid 2px #DDD; border-radius: 8px;}
+.es-before-material-gallery-container, .es-after-material-gallery-container{ margin-left:40px; margin-bottom: 20px; margin-right:20px;}
+.es-before-material-header, .es-after-material-header{margin-left:10px;margin-right:10px; border-bottom: solid 1px #7db7dc; margin-bottom:20px;height:28px;}
+.es-button-download-all{margin-left: 50px}
+.es-button-download-all-files, .es-button-download,.es-button-download-all{background-color:#006fb7; border-radius:10px;padding: 5px 10px 5px 10px; font-weight:bold; color:white;}
+.es-button-download-container ul{list-style:none;}
+.es-button-download-container ul li{display:inline;}
+.es-download-all{margin-top:20px; margin-bottom:20px;}
+
+.es-related-material-items{ margin: 10px;}
+.es-related-material-items ul{list-style: none; margin: 0; padding: 0;}
+.es-shotcut *{display:inline;vertical-align: bottom}
+.es-shotcut, .es-rep-img{margin: 10px;}
+.es-rep-img img {width: 160px;}
+.es-related-item-title{ font-size: 13px}
+
+.es-related-material-item-container{border:solid 1px #CCC; margin: 10px; }
+.es-material-title h1{color: #4183e2; font-size:16pt; font-weight: bold;}
+.es-material-description{line-height: 1.5em; font-size: 14px;}
+.es-related-material-header h2, .es-after-material-header h2, .es-before-material-header h2{font-weight: bold; font-size: 14px}
+.es-related-material-header {margin-left: 10px; margin-right: 10px; border-bottom: solid 1pX #7db7dc;height:28px;}
+.es-related-browser-link{margin: 10px 10px 10px 10px;}
+.es-related-browser-link a{ color: #2c70c5}
+.es-related-item-download{float: right;}
+.es-related-item-title{margin-left: 30px;}
