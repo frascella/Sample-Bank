@@ -7,7 +7,7 @@ get_header();
 	<div class="es-detail-container left">
 		<div class="es-material-title"><h1><?php echo the_title() ?></h1></div>
 		<div class="es-material-description-container">
-			<div class="es-material-description"><?echo get_post_meta($post->ID, 'custom-description', true) ?> </div>
+			<div class="es-material-description"><?php echo get_post_meta($post->ID, 'custom-description', true) ?> </div>
 		</div>
 <?php if ($images = get_before_images()):?>
 		<div class="es-after-material-container">	

@@ -420,7 +420,7 @@ function build_taxonomies() {
     register_taxonomy( 'mtype', 'post', array( 'hierarchical' => true, 'label' => 'Material Type', 'query_var' => true, 'rewrite' => true ) );
 }
 
-add_action( 'admin_head_media_upload_gallery_form', 'mfields_remove_gallery_setting_div' );
+/*add_action( 'admin_head_media_upload_gallery_form', 'mfields_remove_gallery_setting_div' );
 if( !function_exists( 'mfields_remove_gallery_setting_div' ) ) {
     function mfields_remove_gallery_setting_div() {
         print '
@@ -436,14 +436,14 @@ function remove_post_editor(){
         print '
             <style type="text/css">
                 #preview-action, #editor-toolbar, #edButtonHTML, #edButtonPreview, #post-status-info, #editorcontainer, #add_media, #add_audio, #add_video{
-                    display:none;
+                    
                 }
 				#draft-ajax-loading, #ajax-loading{
 					display:none;	
 				}
             </style>';
 
-}
+}*/
 add_filter('media_upload_tabs', 'remove_media_type_url_tab');
 function remove_media_type_url_tab($tabs) {
     unset($tabs['type_url']);
