@@ -16,6 +16,7 @@ function gpro_search_form() {
     $search_submit = '<input id="searchsubmit" name="searchsubmit" type="submit" value="' . __('Search', 'gpro') . '" tabindex="2" />';
     $search_form .= apply_filters('gpro_search_submit', $search_submit);
     $search_form .= "\n" . "\t" . "\t";
+    $search_form .= '<div><small><i>E.g expensive, cheap, big, or any other words...</i></small></div>';
     $search_form .= '</div>';
     $search_form .= "\n" . "\t";
     $search_form .= '</form>';
