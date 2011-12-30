@@ -394,8 +394,7 @@ function register_taxonomy( $taxonomy, $object_type, $args = array() ) {
 function get_taxonomy_labels( $tax ) {
 	if ( isset( $tax->helps ) && empty( $tax->labels['separate_items_with_commas'] ) )
 		$tax->labels['separate_items_with_commas'] = $tax->helps;
-
-	$nohier_vs_hier_defaults = array(
+    $nohier_vs_hier_defaults = array(
 		'name' => array( _x( 'Material Tags', 'taxonomy general name' ), _x( 'Categories', 'taxonomy general name' ) ),
 		'singular_name' => array( _x( 'Material Tag', 'taxonomy singular name' ), _x( 'Category', 'taxonomy singular name' ) ),
 		'search_items' => array( __( 'Search Tags' ), __( 'Search Categories' ) ),
@@ -406,7 +405,7 @@ function get_taxonomy_labels( $tax ) {
 		'edit_item' => array( __( 'Edit Tag' ), __( 'Edit Category' ) ),
 		'view_item' => array( __( 'View Tag' ), __( 'View Category' ) ),
 		'update_item' => array( __( 'Update Tag' ), __( 'Update Category' ) ),
-		'add_new_item' => array( __( 'Add New Tag' ), __( 'Add New Category' ) ),
+		'add_new_item' => array( __( 'Add New Tag' ), __( 'Add New '.ucfirst((!is_null($tax->label)) ? $tax->label : $tax->name) ) ),
 		'new_item_name' => array( __( 'New Tag Name' ), __( 'New Category Name' ) ),
 		'separate_items_with_commas' => array( __( 'Separate tags with commas' ), null ),
 		'add_or_remove_items' => array( __( 'Add or remove tags' ), null ),
