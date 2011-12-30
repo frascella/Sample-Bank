@@ -2890,7 +2890,7 @@ function get_term_link( $term, $taxonomy = '') {
 	$t = get_taxonomy($taxonomy);
     if ( empty($termlink) ) {
 		if ( 'category' == $taxonomy )
-            $termlink = '?hoangcat=' . $term->term_id;
+            $termlink = '?cat=' . $term->term_id;
 			//$termlink = '?cat=' . $term->term_id;
 		elseif ( $t->query_var )
 			$termlink = "?$t->query_var=$slug";

@@ -3,7 +3,7 @@
 Plugin Name: Confirm Publishing Actions
 Plugin URI: http://www.codezilla.nl/wordpress/plugin/confirm-publishing-actions/
 Description: Confirm Publishing Actions is a WordPress plugin that prompts a user to click a confirm (or cancel) button whenever he is trying to submit, publish, update or delete a WordPress post. Simple, lightweight, customizable and translation-ready.
-Version: 1.0
+Version: 1.1.2
 Author: donutz
 Author URI: http://www.codezilla.nl/
 License: GPL2
@@ -29,6 +29,8 @@ Domain Path: /inc/lang
 
 /**
 * Changelog
+* v 1.1.2
+* Minified JS
 * v 1.0
 * Initial release
 */
@@ -41,7 +43,7 @@ new CPA_Confirm_Publishing_Actions;
 
 class CPA_Confirm_Publishing_Actions
 {
-	var $version = '1.0';
+	var $version = '1.1.2';
 	var $plugin_dir_url = '';
 	function CPA_Confirm_Publishing_Actions()
    	{
