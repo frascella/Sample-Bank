@@ -4,7 +4,7 @@ Donate link: http://www.codezilla.nl/donate/
 Tags: publish, delete, update, submit, confirm, confirmation, quickpress, translation-ready
 Requires at least: 3.1
 Tested up to: 3.3
-Stable tag: 1.0
+Stable tag: 1.1.2
 License: GPLv2
 
 Prompts a user to click a confirm button whenever he tries to submit, publish, update or delete a post.
@@ -15,9 +15,9 @@ Confirm Publishing Actions is a WordPress plugin that prompts a user to click a 
 
 Once activated, the plugin will intercept publishing actions on the following admin pages: `post.php`, `edit-post.php`, `edit.php` and `index.php` (QuickPress dashboard widget).
 
-Living up to the latest WordPress coding standards, this plugin requires WordPress version 3.1 or higher.
+Requires WordPress version 3.1 or higher.
 
-Features in version 1.0 include:
+Features in version 1.1.2 include:
 
 * Localization support
 
@@ -104,11 +104,19 @@ add_action( 'admin_enqueue_scripts', 'cpa_cap_dequeue' );`
 
 == Changelog ==
 
+= 1.1.2 =
+
+* Minified JS
+
 = 1.0 =
 
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.1.2 =
+
+Minified JS
 
 = 1.0 =
 

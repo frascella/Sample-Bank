@@ -264,26 +264,18 @@ wp_nonce_field( 'samplepermalink', 'samplepermalinknonce', false );
 
 <?php if ( post_type_supports($post_type, 'editor') ) { ?>
 <div id="<?php echo user_can_richedit() ? 'postdivrich' : 'postdiv'; ?>" class="postarea">
-
-<?php the_editor($post->post_content); ?>
-
-<table id="post-status-info" cellspacing="0"><tbody><tr>
-	<td id="wp-word-count"><?php printf( __( 'Word count: %s' ), '<span class="word-count">0</span>' ); ?></td>
-	<td class="autosave-info">
-	<span class="autosave-message">&nbsp;</span>
+<span class="autosave-message">&nbsp;</span>
 <?php
-	if ( 'auto-draft' != $post->post_status ) {
-		echo '<span id="last-edit">';
-		if ( $last_id = get_post_meta($post_ID, '_edit_last', true) ) {
-			$last_user = get_userdata($last_id);
-			printf(__('Last edited by %1$s on %2$s at %3$s'), esc_html( $last_user->display_name ), mysql2date(get_option('date_format'), $post->post_modified), mysql2date(get_option('time_format'), $post->post_modified));
-		} else {
-			printf(__('Last edited on %1$s at %2$s'), mysql2date(get_option('date_format'), $post->post_modified), mysql2date(get_option('time_format'), $post->post_modified));
-		}
-		echo '</span>';
-	} ?>
-	</td>
-</tr></tbody></table>
+    if ( 'auto-draft' != $post->post_status ) {
+        echo '<span id="last-edit">';
+        if ( $last_id = get_post_meta($post_ID, '_edit_last', true) ) {
+            $last_user = get_userdata($last_id);
+            printf(__('Last edited by %1$s on %2$s at %3$s'), esc_html( $last_user->display_name ), mysql2date(get_option('date_format'), $post->post_modified), mysql2date(get_option('time_format'), $post->post_modified));
+        } else {
+            printf(__('Last edited on %1$s at %2$s'), mysql2date(get_option('date_format'), $post->post_modified), mysql2date(get_option('time_format'), $post->post_modified));
+        }
+        echo '</span>';
+    } ?>
 
 </div>
 

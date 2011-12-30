@@ -8,9 +8,17 @@
     gpro_canonical_url();
     gpro_create_stylesheet();
     gpro_show_pingback();
-    gpro_show_commentreply();    
+    gpro_show_commentreply();
+	wp_enqueue_script('jquery'); 
     wp_head(); ?>
+	<link rel="stylesheet" type="text/css" href="http://localhost/sb/wp-content/themes/gallerypro/custom.css">
 </head>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+	jQuery('#taxonomy-drill-down-3').remove();
+	jQuery('#search-3 h3').remove();
+});
+</script>
 <?php $body_class= ''; if( !is_single() && !is_page() ) $body_class = 'not-singular'; ?>
 <body <?php body_class($body_class) ?>>
     <div class="shine">
@@ -20,16 +28,24 @@
         <div id="header">
             <div id="branding">
                 <div class="buffer">
-                    <?php if(!$up_options->logo): ?>
-                        <div id="blog-title"><span><a href="<?php echo home_url() ?>/" title="<?php bloginfo('name') ?>" rel="home"><?php bloginfo('name') ?></a></span></div>
-                    <?php else: ?>
-                        <div><span><a href="<?php echo home_url() ?>/" title="<?php bloginfo('name') ?>" rel="home"><img src="<?php echo $up_options->logo; ?>" alt="" /></span></div>
-                    <?php endif;
-                    if (is_home() || is_front_page()) { ?>
-                        <h1 id="blog-description"><?php bloginfo('description') ?></h1>
-                    <?php } else { ?>	
-                        <div id="blog-description"><?php bloginfo('description') ?></div>
-                    <?php } ?>
+					<div style="float:left;">
+						<?php if(!$up_options->logo): ?>
+							<div id="blog-title"><span><a href="<?php echo home_url() ?>/" title="<?php bloginfo('name') ?>" rel="home"><?php bloginfo('name') ?></a></span></div>
+						<?php else: ?>
+							<div><span><a href="<?php echo home_url() ?>/" title="<?php bloginfo('name') ?>" rel="home"><img src="<?php echo home_url() ?>/wp-includes/images/sb_logo.png" alt="" /></a></span></div>
+						<?php endif; 
+						if (is_home() || is_front_page()) { ?>
+							<h1 id="blog-description"><?php bloginfo('description') ?></h1>
+						<?php } else { ?>	
+							<div id="blog-description"><?php bloginfo('description') ?></div>
+						<?php } ?>
+					</div>
+					<?php if ( is_user_logged_in() ) { ?>
+					<div style="float:right; padding-top: 35px; padding-right: 0px;" class="topbar">
+						<i>Welcome <?php echo wp_get_current_user()->first_name; ?></i> | <a href="<?php echo get_admin_url(); ?>">My Account</a>
+						| <a href="<?php echo wp_logout_url(); ?>">Sign out</a>
+					</div>
+					<?php } ?>
                 </div> <!-- /.buffer -->
             </div><!-- /#branding -->
             <div id="access">                
@@ -62,7 +78,7 @@
                     catmenu();
                 endif; ?>
             </div><!-- #access -->
-        </div><!-- #header-->
-        <?php gpro_belowheader(); ?>   
-    <div id="wrapper" class="hfeed">
+		</div><!-- #header-->
+        <?php gpro_belowheader(); ?>		
+	<div id="wrapper" class="hfeed">
         <div id="main">
