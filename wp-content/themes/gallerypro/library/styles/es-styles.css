@@ -4,7 +4,7 @@ h2{line-height: 25px; font-weight: bold; font-size: 14px}
 .container{position:relative;}
 .right{float:right; position:absolute; right:0;}
 .left{float:left; }
-.es-content{width: 980px; margin: 0 auto;}
+.es-content{width: 980px; margin: 0 auto; padding-top: 20px;}
 .es-sidebar-container{width:230px;}
 .es-detail-container{margin-right:250px;}
 .es-content-container{margin-left:20px;margin-right:20px}
@@ -20,7 +20,7 @@ h2{line-height: 25px; font-weight: bold; font-size: 14px}
 
 .es-related-material-items{ margin: 10px;}
 .es-related-material-items ul{list-style: none; margin: 0; padding: 0;}
-.es-shotcut *{display:inline;vertical-align: bottom}
+.es-shotcut *{display:inline}
 .es-shotcut, .es-rep-img{margin: 10px;}
 .es-rep-img img {width: 160px;}
 .es-related-item-title{ font-size: 13px}

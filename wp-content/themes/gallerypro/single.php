@@ -9,7 +9,7 @@ get_header();
 		<div class="es-material-description-container">
 			<div class="es-material-description"><?php echo get_post_meta($post->ID, 'custom-description', true) ?> </div>
 		</div>
-<?php if ($images = get_before_images()):?>
+<?php if ($images = get_after_images()):?>
 		<div class="es-after-material-container">	
 			<div class="es-after-material">	
 				<div class="es-after-material-header"><h2>AFTER FILES</h2></div>
@@ -23,13 +23,14 @@ get_header();
 						<div class="ad-thumbs">
 						  <ul class="ad-thumb-list">
                                 <?php foreach ($images as $image) {
+									if ($image->menu_order != 1) continue;
                                     $after_imgtitle = $image->post_title;
                                     $after_imgurl =  wp_get_attachment_url($image->ID);
                                     $after_imgurl_thumbnail =  wp_get_attachment_thumb_url($image->ID,'thumbnail');
                                 ?>
 							<li>
 							  <a href="<?php echo $after_imgurl;?>">
-								<img src="<?php echo $after_imgurl_thumbnail ?>" title="A title for 9.jpg" alt="This is a nice, and incredibly descriptive, description of the image 9.jpg" class="image13"><label>25004</label>
+								<img src="<?php echo $after_imgurl_thumbnail ?>" title="" alt="" class="image13"><label><?php echo $after_imgtitle; ?></label>
 							  </a>
 							</li>
 								<?php
@@ -65,13 +66,14 @@ if ($images = get_before_images()):
 						<div class="ad-thumbs">
 						  <ul class="ad-thumb-list">
 								<?php foreach ($images as $image) {
+									if ($image->menu_order != 0) continue;
 									$before_imgtitle = $image->post_title;
 									$before_imgurl =  wp_get_attachment_url($image->ID);
 									$before_imgurl_thumbnail =  wp_get_attachment_thumb_url($image->ID,'thumbnail');
 								?>
 							<li>
 							  <a href="<?php echo $before_imgurl ?>">
-								<img src="<?php echo $before_imgurl_thumbnail ?>" title="A title for 9.jpg" alt="This is a nice, and incredibly descriptive, description of the image 9.jpg" class="image13"><label>25004</label>
+								<img src="<?php echo $before_imgurl_thumbnail ?>" title="" alt="" class="image13"><label><?php echo $before_imgtitle; ?></label>
 							  </a>
 							</li>
 								<?php } ?>
@@ -92,7 +94,7 @@ if ($images = get_before_images()):
 endif;
 ?>
 	</div>
-<div class="es-sidebar-container right">
+	<div class="es-sidebar-container right">
 		<div class="es-sidebar">
 			<div class="es-download-all"><a class="es-button-download-all-files">Download all files</a></div>
 			<div class="es-related-material-container">
@@ -113,16 +115,23 @@ endif;
 			
 		</div>
 	</div>
-
+	<div class="es-tags-container">
+		<div class="es-tags">
+			<?php
+				the_tags();
+			?>
+		</div>
+	</div>
 </div>
 </div>
 <script type="text/javascript">
  $ = jQuery;
  $(function() {
-    $('img.image1').data('ad-desc', 'Whoa! This description is set through elm.data("ad-desc") instead of using the longdesc attribute.<br>And it contains <strong>H</strong>ow <strong>T</strong>o <strong>M</strong>eet <strong>L</strong>adies... <em>What?</em> That aint what HTML stands for? Man...');
+/*    $('img.image1').data('ad-desc', 'Whoa! This description is set through elm.data("ad-desc") instead of using the longdesc attribute.<br>And it contains <strong>H</strong>ow <strong>T</strong>o <strong>M</strong>eet <strong>L</strong>adies... <em>What?</em> That aint what HTML stands for? Man...');
     $('img.image1').data('ad-title', 'Title through $.data');
     $('img.image4').data('ad-desc', 'This image is wider than the wrapper, so it has been scaled down');
     $('img.image5').data('ad-desc', 'This image is higher than the wrapper, so it has been scaled down');
+*/
     var galleries = $('.ad-gallery').adGallery();
     $('#switch-effect').change(
       function() {
@@ -151,11 +160,11 @@ endif;
 <?php
 
 function get_before_images($size = 'thumbnail') {
-	return get_children( array('post_parent' => get_the_ID(), 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'menu_order' => '0', 'order' => 'ASC', 'orderby' => 'menu_order ID') );
+	return get_children( array('post_parent' => get_the_ID(), 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'menu_order' => 0, 'order' => 'ASC', 'orderby' => 'menu_order ID') );
 }
 
 function get_after_images($size = 'thumbnail') {
-	return get_children( array('post_parent' => get_the_ID(), 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'menu_order' => '1', 'order' => 'ASC', 'orderby' => 'menu_order ID') );
+	return get_children( array('post_parent' => get_the_ID(), 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'menu_order' => 1, 'order' => 'ASC', 'orderby' => 'menu_order ID') );
 }
 
 function get_related_material(){

@@ -159,7 +159,7 @@
             .ad-gallery .ad-thumbs li a img {
               border: 1px solid #CCC;
               display: block;
-			  height: 60px;
+			  height: 50px;
             }
             .ad-gallery .ad-thumbs li a.ad-active img {
               border: 3px solid #616161; 
@@ -171,3 +171,6 @@
   left: -9000px;
   top: -9000px;
 }
+/*  Fri Dec 30, 2011 11:35:46 added by Thanh Son 
+.ad-nav{overflow: hidden;background: transparent;}
+*/
