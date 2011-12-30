@@ -42,7 +42,8 @@ jQuery(document).ready(function() {
 					</div>
 					<?php if ( is_user_logged_in() ) { ?>
 					<div style="float:right; padding-top: 35px; padding-right: 0px;" class="topbar">
-						<i>Welcome <?php echo wp_get_current_user()->first_name; ?></i> | <a href="<?php echo wp_logout_url(); ?>">Sign out</a>
+						<i>Welcome <?php echo wp_get_current_user()->first_name; ?></i> | <a href="<?php echo get_admin_url(); ?>">My Account</a>
+						| <a href="<?php echo wp_logout_url(); ?>">Sign out</a>
 					</div>
 					<?php } ?>
                 </div> <!-- /.buffer -->
